@@ -28,7 +28,7 @@ contract Web3Mint is ERC721 {
         uint256 _availableMint,
         uint256 _price,
         uint256 _expirationDate
-    ) ERC721("Crops NFT", "crop") {
+    ) ERC721("CropNFT", "CROP") {
         farmerName = _farmerName;
         cropsName = _cropsName;
         description = _description;
@@ -40,6 +40,8 @@ contract Web3Mint is ERC721 {
     }
 
     function mintNFT() public {
+        require(availableMint > 0, "Not enough nft");
+
         uint256 newItemId = _tokenIds.current();
         _safeMint(msg.sender, newItemId);
         console.log(
@@ -48,6 +50,7 @@ contract Web3Mint is ERC721 {
             msg.sender
         );
         _tokenIds.increment();
+        availableMint--;
     }
 
     function tokenURI(uint256 _tokenId)
