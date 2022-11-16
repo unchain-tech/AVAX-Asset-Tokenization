@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "./libraries/Base64.sol";
 import "hardhat/console.sol";
 
-contract Web3Mint is ERC721 {
+contract CropNft is ERC721 {
     string public farmerName;
     string public cropsName;
     string public description;
@@ -25,7 +25,6 @@ contract Web3Mint is ERC721 {
         string memory _cropsName,
         string memory _description,
         uint256 _totalMint,
-        uint256 _availableMint,
         uint256 _price,
         uint256 _expirationDate
     ) ERC721("CropNFT", "CROP") {
@@ -33,7 +32,7 @@ contract Web3Mint is ERC721 {
         cropsName = _cropsName;
         description = _description;
         totalMint = _totalMint;
-        availableMint = _availableMint;
+        availableMint = _totalMint;
         price = _price;
         expirationDate = _expirationDate;
         console.log("This is my NFT contract.");
@@ -67,10 +66,12 @@ contract Web3Mint is ERC721 {
                         cropsName,
                         " -- NFT #: ",
                         Strings.toString(_tokenId),
-                        '", "description": "An epic NFT", "image": "ipfs://',
+                        '", "description": "',
+                        description,
+                        '", "image": "ipfs://',
                         "", //TODO: 画像も入れるか
                         '"}' //TODO: この他の属性を追加するか
-                    )
+                    ) // これの正式形式がわからん
                 )
             )
         );
