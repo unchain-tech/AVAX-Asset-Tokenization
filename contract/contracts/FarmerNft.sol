@@ -36,7 +36,7 @@ contract FarmerNft is ERC721 {
         expirationDate = _expirationDate;
     }
 
-    //TODO トークンの移動の確認
+    //TODO トークンはavaxにする
     function mint(address to) public {
         require(availableMint > 0, "Not enough nft");
 
@@ -68,7 +68,7 @@ contract FarmerNft is ERC721 {
                         '", "description": "',
                         description,
                         '", "image": "ipfs://',
-                        "", //TODO: 画像も入れるか
+                        "", //TODO: 画像は事前のipfsで
                         '"}' //TODO: この他の属性を追加するか
                     ) // これの正式形式がわからん
                 )
