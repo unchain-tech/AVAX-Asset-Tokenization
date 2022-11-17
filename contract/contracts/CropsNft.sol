@@ -7,9 +7,8 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "./libraries/Base64.sol";
 import "hardhat/console.sol";
 
-contract CropNft is ERC721 {
-    string public farmerName;
-    string public cropsName;
+contract CropsNft is ERC721 {
+    string public nftName;
     string public description;
     uint256 public totalMint;
     uint256 public availableMint;
@@ -21,15 +20,13 @@ contract CropNft is ERC721 {
     Counters.Counter private _tokenIds;
 
     constructor(
-        string memory _farmerName,
-        string memory _cropsName,
+        string memory _nftName,
         string memory _description,
         uint256 _totalMint,
         uint256 _price,
         uint256 _expirationDate
-    ) ERC721("CropNFT", "CROP") {
-        farmerName = _farmerName;
-        cropsName = _cropsName;
+    ) ERC721("CropsNFT", "CROPS") {
+        nftName = _nftName;
         description = _description;
         totalMint = _totalMint;
         availableMint = _totalMint;
@@ -38,7 +35,7 @@ contract CropNft is ERC721 {
         console.log("This is my NFT contract.");
     }
 
-    function mintNFT() public {
+    function mint() public {
         require(availableMint > 0, "Not enough nft");
 
         uint256 newItemId = _tokenIds.current();
@@ -63,7 +60,7 @@ contract CropNft is ERC721 {
                 string(
                     abi.encodePacked(
                         '{"name": "',
-                        cropsName,
+                        nftName,
                         " -- NFT #: ",
                         Strings.toString(_tokenId),
                         '", "description": "',
