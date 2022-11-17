@@ -3,7 +3,7 @@ import { BigNumber } from "ethers";
 import { expect } from "chai";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
-describe("CropsNft", function () {
+describe("FarmerNft", function () {
   async function deployContract() {
     const [owner, otherAccount] = await ethers.getSigners();
 
@@ -15,8 +15,8 @@ describe("CropsNft", function () {
     const price = 100;
     const expirationDate = 100;
 
-    const CropsNft = await ethers.getContractFactory("CropsNft");
-    const cropsNft = await CropsNft.deploy(
+    const FarmerNft = await ethers.getContractFactory("FarmerNft");
+    const cropsNft = await FarmerNft.deploy(
       farmerName,
       name,
       symbol,

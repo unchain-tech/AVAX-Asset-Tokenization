@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import "./CropsNft.sol";
+import "./FarmerNft.sol";
 import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -9,9 +9,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 // TODO 自分のnftを買った全てのアカウントを取得する関数
 
 contract AssetTokenization {
-    CropsNft[] nftContracts;
+    FarmerNft[] nftContracts;
     uint256 nftContractCount;
-    mapping(address => CropsNft) farmerToNft;
+    mapping(address => FarmerNft) farmerToNft;
 
     struct nftDetails {
         string farmerName;
@@ -47,7 +47,7 @@ contract AssetTokenization {
             "Your token is already deployed"
         );
 
-        CropsNft newNft = new CropsNft(
+        FarmerNft newNft = new FarmerNft(
             _farmerName,
             _name,
             _symbol,

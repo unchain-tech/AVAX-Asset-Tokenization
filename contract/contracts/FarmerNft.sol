@@ -7,8 +7,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "./libraries/Base64.sol";
 import "hardhat/console.sol";
 
-// TODO: farmerNFtにする
-contract CropsNft is ERC721 {
+contract FarmerNft is ERC721 {
     address private _owner;
     string public farmerName;
     string public description;
