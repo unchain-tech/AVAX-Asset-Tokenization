@@ -42,8 +42,8 @@ contract Manager {
             _price,
             _expirationDate
         );
-        allCropNft.push(address(newNft));
         numOfNft++;
+        allCropNft.push(address(newNft));
     }
 
     function allAttribute() public view returns (attribute[] memory) {
@@ -63,5 +63,13 @@ contract Manager {
             }
         }
         return attributes;
+    }
+
+    function buy(uint256 id) public {
+        ICropNft(allCropNft[id]).mintNFT();
+    }
+
+    function getAddress(uint256 id) public view returns (address) {
+        return address(allCropNft[id]);
     }
 }
