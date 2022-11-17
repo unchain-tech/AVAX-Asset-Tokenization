@@ -5,8 +5,9 @@ import "./FarmerNft.sol";
 import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
 
-contract AssetTokenization {
+contract AssetTokenization is AutomationCompatibleInterface {
     FarmerNft[] nftContracts;
     uint256 nftContractCount;
     mapping(address => FarmerNft) farmerToNft;
@@ -93,19 +94,31 @@ contract AssetTokenization {
         return farmerToNft[msg.sender].allOwners();
     }
 
-    function checkExpiration() public view returns (bool) {
+    function checkUpkeep(
+        bytes calldata /* checkData */
+    )
+        external
+        view
+        override
+        returns (
+            bool upkeepNeeded,
+            bytes memory /* performData */
+        )
+    {
         for (uint256 index = 0; index < nftContracts.length; index++) {
             if (isDeployed(index) == false) {
                 continue;
             }
             if (nftContracts[index].available() == false) {
-                return true;
+                return (true, "");
             }
         }
-        return false;
+        return (false, "");
     }
 
-    function end() public {
+    function performUpkeep(
+        bytes calldata /* performData */
+    ) external override {
         for (uint256 index = 0; index < nftContracts.length; index++) {
             if (isDeployed(index) == false) {
                 continue;
