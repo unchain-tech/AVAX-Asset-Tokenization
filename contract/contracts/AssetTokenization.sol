@@ -40,6 +40,8 @@ contract AssetTokenization {
             _expirationDate
         );
         numOfAvailableContracts++;
+        uint256 currentId = allNftContracts.length;
+        isAvailableContract[currentId] = true;
         allNftContracts.push(newNft);
     }
 
