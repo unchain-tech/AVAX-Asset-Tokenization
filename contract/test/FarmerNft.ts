@@ -66,7 +66,7 @@ describe("FarmerNft", function () {
 
       await farmerNft.mint(userAccounts[0].address);
 
-      console.log("URI: ", farmerNft.tokenURI(0));
+      console.log("URI: ", await farmerNft.tokenURI(0));
     });
   });
 
