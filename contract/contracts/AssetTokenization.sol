@@ -89,20 +89,30 @@ contract AssetTokenization {
         nftContracts[index].mint(msg.sender);
     }
 
-    function getBuyers() public view returns (address[] memory) {
+    function allBuyers() public view returns (address[] memory) {
         return farmerToNft[msg.sender].allOwners();
     }
 
-    // function checkExpiration() public {
-    //     for (uint256 index = 0; index < nftContracts.length; index++) {
-    //         if (isDeployed(index) == false) {
-    //             continue;
-    //         }
-    //         if (nftContracts[index].available() == false) {
-    //             isAvailableContract[index] = false;
-    //             numOfAvailableContracts--;
-    //             farmerToNft[index].burn();
-    //         }
-    //     }
-    // }
+    function checkExpiration() public view returns (bool) {
+        for (uint256 index = 0; index < nftContracts.length; index++) {
+            if (isDeployed(index) == false) {
+                continue;
+            }
+            if (nftContracts[index].available() == false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function end() public {
+        for (uint256 index = 0; index < nftContracts.length; index++) {
+            if (isDeployed(index) == false) {
+                continue;
+            }
+            if (nftContracts[index].available() == false) {
+                nftContracts[index].end();
+            }
+        }
+    }
 }
