@@ -10,30 +10,42 @@ describe("AssetTokenization", function () {
     const AssetTokenization = await ethers.getContractFactory(
       "AssetTokenization"
     );
-    const manager = await AssetTokenization.deploy();
+    const assetTokenization = await AssetTokenization.deploy();
 
     return {
       owner,
       otherAccount,
-      manager,
+      assetTokenization,
     };
   }
 
   describe("basic", function () {
     it("basic", async function () {
-      const { otherAccount, manager } = await loadFixture(deployContract);
+      const { owner, otherAccount, assetTokenization } = await loadFixture(
+        deployContract
+      );
 
-      const nftName = "a";
-      const description = "a";
+      const farmerName = "farmer";
+      const name = "nft";
+      const symbol = "symbol";
+      const description = "description";
       const totalMint = 10;
       const price = 100;
       const expirationDate = 100;
 
-      await manager
+      await assetTokenization
         .connect(otherAccount)
-        .newCropsNft(nftName, description, totalMint, price, expirationDate);
+        .generateNft(
+          farmerName,
+          name,
+          symbol,
+          description,
+          totalMint,
+          price,
+          expirationDate
+        );
 
-      const a = await manager.getAllCropsNft();
+      const a = await assetTokenization.allNftDetals();
 
       console.log("attribute:", a);
     });

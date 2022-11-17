@@ -7,15 +7,19 @@ describe("CropsNft", function () {
   async function deployContract() {
     const [owner, otherAccount] = await ethers.getSigners();
 
-    const nftName = "a";
-    const description = "a";
+    const farmerName = "farmer";
+    const name = "nft";
+    const symbol = "symbol";
+    const description = "description";
     const totalMint = 10;
     const price = 100;
     const expirationDate = 100;
 
     const CropsNft = await ethers.getContractFactory("CropsNft");
     const cropsNft = await CropsNft.deploy(
-      nftName,
+      farmerName,
+      name,
+      symbol,
       description,
       totalMint,
       price,

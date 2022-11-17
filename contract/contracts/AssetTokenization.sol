@@ -6,91 +6,100 @@ import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-//農家ごとにコントラクトを作る mapping -> contract
-contract AssetTokenization {
-    CropsNft[] public allNftContracts;
-    uint256 private numOfAvailableContracts;
-    mapping(uint256 => bool) isAvailableContract;
+// TODO 自分のnftを買った全てのアカウントを取得する関数
 
-    struct nftContractAttribute {
-        uint256 id;
-        string nftName;
+contract AssetTokenization {
+    CropsNft[] nftContracts;
+    uint256 nftContractCount;
+    mapping(address => CropsNft) farmerToNft;
+
+    struct nftDetails {
+        string farmerName;
+        string name;
+        string symbol;
         string description;
+        uint256 id;
         uint256 totalMint;
         uint256 availableMint;
         uint256 price;
         uint256 expirationDate;
     }
 
-    constructor() {
-        console.log("This is my NFT contract.");
+    function farmerDeployedNft(address farmer) internal view returns (bool) {
+        return address(farmerToNft[farmer]) != address(0);
     }
 
-    function newCropsNft(
-        string memory _nftName,
+    function deployedNft(uint256 index) internal view returns (bool) {
+        return address(nftContracts[index]) != address(0);
+    }
+
+    function generateNft(
+        string memory _farmerName,
+        string memory _name,
+        string memory _symbol,
         string memory _description,
         uint256 _totalMint,
         uint256 _price,
         uint256 _expirationDate
     ) public {
+        require(
+            farmerDeployedNft(msg.sender) == false,
+            "Your token is already deployed"
+        );
+
         CropsNft newNft = new CropsNft(
-            _nftName,
+            _farmerName,
+            _name,
+            _symbol,
             _description,
             _totalMint,
             _price,
             _expirationDate
         );
 
-        numOfAvailableContracts++;
-
-        uint256 currentId = allNftContracts.length;
-        isAvailableContract[currentId] = true;
-
-        allNftContracts.push(newNft);
+        nftContracts.push(newNft);
+        nftContractCount++;
+        farmerToNft[msg.sender] = newNft;
     }
 
-    function getAllCropsNft()
-        public
-        view
-        returns (nftContractAttribute[] memory)
-    {
-        nftContractAttribute[] memory attributes = new nftContractAttribute[](
-            numOfAvailableContracts
-        );
-        for (uint256 index = 0; index < numOfAvailableContracts; index++) {
-            if (isAvailableContract[index]) {
-                attributes[index] = nftContractAttribute(
+    function allNftDetals() public view returns (nftDetails[] memory) {
+        nftDetails[] memory deltails = new nftDetails[](nftContractCount);
+        uint256 counter;
+
+        for (uint256 index = 0; index < nftContracts.length; index++) {
+            if (deployedNft(index)) {
+                deltails[counter] = nftDetails(
+                    nftContracts[index].farmerName(),
+                    nftContracts[index].name(),
+                    nftContracts[index].symbol(),
+                    nftContracts[index].description(),
                     index,
-                    allNftContracts[index].nftName(),
-                    allNftContracts[index].description(),
-                    allNftContracts[index].totalMint(),
-                    allNftContracts[index].availableMint(),
-                    allNftContracts[index].price(),
-                    allNftContracts[index].expirationDate()
+                    nftContracts[index].totalMint(),
+                    nftContracts[index].availableMint(),
+                    nftContracts[index].price(),
+                    nftContracts[index].expirationDate()
                 );
+                counter++;
             }
         }
-        return attributes;
+
+        return deltails;
     }
 
-    function buy(uint256 id) public {
-        allNftContracts[id].mint();
+    function buy(uint256 index) public {
+        nftContracts[index].mint();
     }
 
-    function getAddress(uint256 id) public view returns (address) {
-        return address(allNftContracts[id]);
-    }
-
-    function checkExpiration() public {
-        for (uint256 index = 0; index < numOfAvailableContracts; index++) {
-            if (isAvailableContract[index] == false) {
-                continue;
-            }
-            if (allNftContracts[index].available() == false) {
-                isAvailableContract[index] = false;
-                numOfAvailableContracts--;
-                allNftContracts[index].burn();
-            }
-        }
-    }
+    // function checkExpiration() public {
+    //     for (uint256 index = 0; index < nftContracts.length; index++) {
+    //         if (deployedNft(index) == false) {
+    //             continue;
+    //         }
+    //         if (nftContracts[index].available() == false) {
+    //             isAvailableContract[index] = false;
+    //             numOfAvailableContracts--;
+    //             farmerToNft[index].burn();
+    //         }
+    //     }
+    // }
 }
