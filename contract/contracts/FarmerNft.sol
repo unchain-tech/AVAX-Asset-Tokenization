@@ -38,11 +38,11 @@ contract FarmerNft is ERC721 {
         expirationDate = _expirationDate;
     }
 
-    function mint() public {
+    function mint(address to) public {
         require(availableMint > 0, "Not enough nft");
 
         uint256 newItemId = _tokenIds.current();
-        _safeMint(msg.sender, newItemId);
+        _safeMint(to, newItemId);
         console.log(
             "An NFT w/ ID %s has been minted to %s",
             newItemId,
@@ -93,5 +93,13 @@ contract FarmerNft is ERC721 {
         for (uint256 id = 0; id < _tokenIds.current(); id++) {
             _burn(id);
         }
+    }
+
+    function allOwners() public view returns (address[] memory) {
+        address[] memory owners = new address[](_tokenIds.current());
+        for (uint256 index = 0; index < _tokenIds.current(); index++) {
+            owners[index] = ownerOf(index);
+        }
+        return owners;
     }
 }

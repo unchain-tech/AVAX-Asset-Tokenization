@@ -37,7 +37,7 @@ describe("FarmerNft", function () {
     it("basic", async function () {
       const { otherAccount, cropsNft } = await loadFixture(deployContract);
 
-      await cropsNft.connect(otherAccount).mint();
+      await cropsNft.mint(otherAccount.address);
 
       console.log("tokenURI:", await cropsNft.tokenURI(0));
     });

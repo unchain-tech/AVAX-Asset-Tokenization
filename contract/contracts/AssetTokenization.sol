@@ -6,8 +6,6 @@ import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-// TODO 自分のnftを買った全てのアカウントを取得する関数
-
 contract AssetTokenization {
     FarmerNft[] nftContracts;
     uint256 nftContractCount;
@@ -62,7 +60,7 @@ contract AssetTokenization {
         farmerToNft[msg.sender] = newNft;
     }
 
-    function allNftDetals() public view returns (nftDetails[] memory) {
+    function allNftDetails() public view returns (nftDetails[] memory) {
         nftDetails[] memory deltails = new nftDetails[](nftContractCount);
         uint256 counter;
 
@@ -87,7 +85,12 @@ contract AssetTokenization {
     }
 
     function buy(uint256 index) public {
-        nftContracts[index].mint();
+        require(deployedNft(index), "Not yet deployed");
+        nftContracts[index].mint(msg.sender);
+    }
+
+    function allOwners() public view returns (address[] memory) {
+        return farmerToNft[msg.sender].allOwners();
     }
 
     // function checkExpiration() public {
