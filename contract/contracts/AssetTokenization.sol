@@ -6,6 +6,7 @@ import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+//農家ごとにコントラクトを作る mapping -> contract
 contract AssetTokenization {
     CropsNft[] public allNftContracts;
     uint256 private numOfAvailableContracts;
@@ -39,9 +40,12 @@ contract AssetTokenization {
             _price,
             _expirationDate
         );
+
         numOfAvailableContracts++;
+
         uint256 currentId = allNftContracts.length;
         isAvailableContract[currentId] = true;
+
         allNftContracts.push(newNft);
     }
 
@@ -75,5 +79,18 @@ contract AssetTokenization {
 
     function getAddress(uint256 id) public view returns (address) {
         return address(allNftContracts[id]);
+    }
+
+    function checkExpiration() public {
+        for (uint256 index = 0; index < numOfAvailableContracts; index++) {
+            if (isAvailableContract[index] == false) {
+                continue;
+            }
+            if (allNftContracts[index].available() == false) {
+                isAvailableContract[index] = false;
+                numOfAvailableContracts--;
+                allNftContracts[index].burn();
+            }
+        }
     }
 }

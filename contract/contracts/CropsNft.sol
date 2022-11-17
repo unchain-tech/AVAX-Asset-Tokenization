@@ -77,4 +77,18 @@ contract CropsNft is ERC721 {
         );
         return output;
     }
+
+    function available() public view returns (bool) {
+        if (block.timestamp < expirationDate) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function burn() public {
+        for (uint256 id = 0; id < _tokenIds.current(); id++) {
+            _burn(id);
+        }
+    }
 }
