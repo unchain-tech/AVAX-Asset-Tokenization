@@ -3,12 +3,14 @@ import { BigNumber } from "ethers";
 import { expect } from "chai";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
-describe("Manager", function () {
+describe("AssetTokenization", function () {
   async function deployContract() {
     const [owner, otherAccount] = await ethers.getSigners();
 
-    const Manager = await ethers.getContractFactory("Manager");
-    const manager = await Manager.deploy();
+    const AssetTokenization = await ethers.getContractFactory(
+      "AssetTokenization"
+    );
+    const manager = await AssetTokenization.deploy();
 
     return {
       owner,
@@ -17,12 +19,11 @@ describe("Manager", function () {
     };
   }
 
-  describe("provide", function () {
-    it("Token should be moved", async function () {
+  describe("basic", function () {
+    it("basic", async function () {
       const { otherAccount, manager } = await loadFixture(deployContract);
 
-      const farmerName = "a";
-      const cropsName = "a";
+      const nftName = "a";
       const description = "a";
       const totalMint = 10;
       const price = 100;
@@ -30,16 +31,9 @@ describe("Manager", function () {
 
       await manager
         .connect(otherAccount)
-        .newCrops(
-          farmerName,
-          cropsName,
-          description,
-          totalMint,
-          price,
-          expirationDate
-        );
+        .newCropsNft(nftName, description, totalMint, price, expirationDate);
 
-      const a = await manager.allAttribute();
+      const a = await manager.getAllCropsNft();
 
       console.log("attribute:", a);
     });

@@ -3,21 +3,19 @@ import { BigNumber } from "ethers";
 import { expect } from "chai";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
-describe("CropNft", function () {
+describe("CropsNft", function () {
   async function deployContract() {
     const [owner, otherAccount] = await ethers.getSigners();
 
-    const farmerName = "a";
-    const cropsName = "a";
+    const nftName = "a";
     const description = "a";
     const totalMint = 10;
     const price = 100;
     const expirationDate = 100;
 
-    const CropNft = await ethers.getContractFactory("CropNft");
-    const cropNft = await CropNft.deploy(
-      farmerName,
-      cropsName,
+    const CropsNft = await ethers.getContractFactory("CropsNft");
+    const cropsNft = await CropsNft.deploy(
+      nftName,
       description,
       totalMint,
       price,
@@ -27,17 +25,17 @@ describe("CropNft", function () {
     return {
       owner,
       otherAccount,
-      cropNft,
+      cropsNft,
     };
   }
 
-  describe("provide", function () {
-    it("Token should be moved", async function () {
-      const { otherAccount, cropNft } = await loadFixture(deployContract);
+  describe("basic", function () {
+    it("basic", async function () {
+      const { otherAccount, cropsNft } = await loadFixture(deployContract);
 
-      await cropNft.connect(otherAccount).mintNFT();
+      await cropsNft.connect(otherAccount).mint();
 
-      console.log("tokenURI:", await cropNft.tokenURI(0));
+      console.log("tokenURI:", await cropsNft.tokenURI(0));
     });
   });
 });
