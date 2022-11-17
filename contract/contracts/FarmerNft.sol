@@ -8,7 +8,6 @@ import "./libraries/Base64.sol";
 import "hardhat/console.sol";
 
 contract FarmerNft is ERC721 {
-    address private _owner;
     string public farmerName;
     string public description;
     uint256 public totalMint;
@@ -29,7 +28,6 @@ contract FarmerNft is ERC721 {
         uint256 _price,
         uint256 _expirationDate
     ) ERC721(_name, _symbol) {
-        _owner = msg.sender;
         farmerName = _farmerName;
         description = _description;
         totalMint = _totalMint;
@@ -38,6 +36,7 @@ contract FarmerNft is ERC721 {
         expirationDate = _expirationDate;
     }
 
+    //TODO トークンの移動の確認
     function mint(address to) public {
         require(availableMint > 0, "Not enough nft");
 
@@ -89,7 +88,8 @@ contract FarmerNft is ERC721 {
         }
     }
 
-    function burn() public {
+    function end() public {
+        require(available() == false, "still available");
         for (uint256 id = 0; id < _tokenIds.current(); id++) {
             _burn(id);
         }

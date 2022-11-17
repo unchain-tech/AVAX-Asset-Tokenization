@@ -84,7 +84,7 @@ describe("AssetTokenization", function () {
       await assetTokenization.connect(account1).buy(0);
       await assetTokenization.connect(account2).buy(0);
 
-      const owners = await assetTokenization.connect(farmer).allOwners();
+      const owners = await assetTokenization.connect(farmer).getBuyers();
 
       console.log("owners:", [account1.address, account2.address]);
       console.log("result:", owners);

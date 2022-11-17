@@ -27,7 +27,7 @@ contract AssetTokenization {
         return address(farmerToNft[farmer]) != address(0);
     }
 
-    function deployedNft(uint256 index) internal view returns (bool) {
+    function isDeployed(uint256 index) internal view returns (bool) {
         return address(nftContracts[index]) != address(0);
     }
 
@@ -65,7 +65,7 @@ contract AssetTokenization {
         uint256 counter;
 
         for (uint256 index = 0; index < nftContracts.length; index++) {
-            if (deployedNft(index)) {
+            if (isDeployed(index)) {
                 deltails[counter] = nftDetails(
                     nftContracts[index].farmerName(),
                     nftContracts[index].name(),
@@ -85,17 +85,17 @@ contract AssetTokenization {
     }
 
     function buy(uint256 index) public {
-        require(deployedNft(index), "Not yet deployed");
+        require(isDeployed(index), "Not yet deployed");
         nftContracts[index].mint(msg.sender);
     }
 
-    function allOwners() public view returns (address[] memory) {
+    function getBuyers() public view returns (address[] memory) {
         return farmerToNft[msg.sender].allOwners();
     }
 
     // function checkExpiration() public {
     //     for (uint256 index = 0; index < nftContracts.length; index++) {
-    //         if (deployedNft(index) == false) {
+    //         if (isDeployed(index) == false) {
     //             continue;
     //         }
     //         if (nftContracts[index].available() == false) {

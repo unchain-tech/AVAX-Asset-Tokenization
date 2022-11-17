@@ -11,12 +11,12 @@ describe("FarmerNft", function () {
     const name = "nft";
     const symbol = "symbol";
     const description = "description";
-    const totalMint = 10;
+    const totalMint = 5;
     const price = 100;
     const expirationDate = 100;
 
     const FarmerNft = await ethers.getContractFactory("FarmerNft");
-    const cropsNft = await FarmerNft.deploy(
+    const farmerNft = await FarmerNft.deploy(
       farmerName,
       name,
       symbol,
@@ -29,17 +29,30 @@ describe("FarmerNft", function () {
     return {
       owner,
       otherAccount,
-      cropsNft,
+      farmerNft,
+      totalMint,
     };
   }
 
-  describe("basic", function () {
+  describe("mint", function () {
     it("basic", async function () {
-      const { otherAccount, cropsNft } = await loadFixture(deployContract);
+      const { otherAccount, farmerNft } = await loadFixture(deployContract);
 
-      await cropsNft.mint(otherAccount.address);
+      await farmerNft.mint(otherAccount.address);
 
-      console.log("tokenURI:", await cropsNft.tokenURI(0));
+      expect(await farmerNft.ownerOf(0)).to.equal(otherAccount.address);
+    });
+
+    it("revert when not enough nft to mint", async function () {
+      const { otherAccount, farmerNft, totalMint } = await loadFixture(
+        deployContract
+      );
+
+      for (let cnt = 0; cnt < totalMint; cnt++) {
+        await farmerNft.mint(otherAccount.address);
+      }
+
+      await expect(farmerNft.mint(otherAccount.address)).to.be.reverted;
     });
   });
 });
