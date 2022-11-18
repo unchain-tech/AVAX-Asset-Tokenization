@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getEthereum } from "../utils/ethereum";
 
 type ReturnUseWallet = {
@@ -27,7 +27,7 @@ export const useWallet = (): ReturnUseWallet => {
     }
   };
 
-  const checkIfWalletIsConnected = async () => {
+  const checkIfWalletIsConnected = useCallback(async () => {
     try {
       if (!ethereum) {
         console.log("Make sure you have Wallet!");
@@ -47,11 +47,11 @@ export const useWallet = (): ReturnUseWallet => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [ethereum]);
 
   useEffect(() => {
     checkIfWalletIsConnected();
-  }, []);
+  }, [checkIfWalletIsConnected]);
 
   return {
     currentAccount,

@@ -3,9 +3,11 @@ import styles from "../styles/Home.module.css";
 import { useWallet } from "../hooks/useWallet";
 import Container from "../components/Container/Container";
 import Link from "next/link";
+import CurrentAccountContext from "../context/CurrentAccountProvider";
+import { useContext } from "react";
 
 const Home: NextPage = () => {
-  const { currentAccount, connectWallet } = useWallet();
+  const [currentAccount, connectWallet] = useContext(CurrentAccountContext);
 
   return (
     <div className={styles.pageBody}>

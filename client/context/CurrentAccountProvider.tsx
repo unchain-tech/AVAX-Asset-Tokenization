@@ -6,7 +6,11 @@ const CurrentAccountContext = createContext<[string | undefined, () => void]>([
   () => {},
 ]);
 
-export const CurrentAccountProvider = (children: ReactNode) => {
+export const CurrentAccountProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const { currentAccount, connectWallet } = useWallet();
 
   return (
