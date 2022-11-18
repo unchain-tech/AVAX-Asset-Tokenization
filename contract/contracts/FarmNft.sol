@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "hardhat/console.sol";
 
-contract FarmerNft is ERC721 {
+contract FarmNft is ERC721 {
     address public farmerAddress;
     string public farmerName;
     string public description;
@@ -44,13 +44,11 @@ contract FarmerNft is ERC721 {
         require(availableMint > 0, "Not enough nft");
         require(isExpired() == false, "Already expired");
 
+        // トークンが支払われたかを見る
+
         uint256 newItemId = _tokenIds.current();
         _safeMint(to, newItemId);
-        console.log(
-            "An NFT w/ ID %s has been minted to %s",
-            newItemId,
-            msg.sender
-        );
+        console.log("An NFT w/ ID %s has been minted to %s", newItemId, to);
         _tokenIds.increment();
         availableMint--;
     }
@@ -85,6 +83,8 @@ contract FarmerNft is ERC721 {
     }
 
     //TODO block.timestampを使っていいのかについて考察・注記
+    // block.numberを使うのが一般的, ブロック生成間隔はある程度決まっている
+    // Avalancheではどうかを調べる
     function isExpired() public view returns (bool) {
         if (block.timestamp < expirationDate) {
             return false;
