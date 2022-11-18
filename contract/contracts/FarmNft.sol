@@ -84,6 +84,7 @@ contract FarmNft is ERC721 {
 
     //TODO block.timestampを使っていいのかについて考察・注記
     // block.numberを使うのが一般的, ブロック生成間隔はある程度決まっている
+    // Avalancheではどうかを調べる
     function isExpired() public view returns (bool) {
         if (block.timestamp < expirationDate) {
             return false;
