@@ -1,13 +1,25 @@
-# Sample Hardhat Project
+# dapp概要
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+農家の会員権をトークン(NFT)化し購入できるアプリ。
 
-Try running some of the following tasks:
+農家は会員権をトークン化することで, 収益の安定性などを図れる。
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+購入者はトークンを転売することや, 農家を直接応援することができる。
+
+トークンはあらかじめ設定された期限で自動的にバーンされる。
+
+# コード概要
+
+### `contracts/AssetTokenization.sol`:
+
+- データ管理とフロントエンドとのデータやりとり。
+- NFTコントラクトのデプロイ, コントラクトのアドレス管理。
+- 期限切れNFTのバーンを自動で行うために, chainlinkが用意した`AutomationCompatibleInterface`を実装。
+
+### `contracts/FarmerNft.sol`:
+
+- 農家毎にデプロイするNFTコントラクト。
+
+### 全体図
+
+![](./overview.drawio.svg)
