@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "hardhat/console.sol";
 
 contract FarmerNft is ERC721 {
+    address public farmerAddress;
     string public farmerName;
     string public description;
     uint256 public totalMint;
@@ -20,6 +21,7 @@ contract FarmerNft is ERC721 {
     Counters.Counter private _tokenIds;
 
     constructor(
+        address _famerAddress,
         string memory _farmerName,
         string memory _name,
         string memory _symbol,
@@ -28,6 +30,7 @@ contract FarmerNft is ERC721 {
         uint256 _price,
         uint256 _expirationDate
     ) ERC721(_name, _symbol) {
+        farmerAddress = _famerAddress;
         farmerName = _farmerName;
         description = _description;
         totalMint = _totalMint;
@@ -36,8 +39,8 @@ contract FarmerNft is ERC721 {
         expirationDate = _expirationDate;
     }
 
-    //TODO トークンはavaxにする
-    function mint(address to) public {
+    //TODO 支払いトークンはavaxにして簡易化するか
+    function mintNFT(address to) public {
         require(availableMint > 0, "Not enough nft");
 
         uint256 newItemId = _tokenIds.current();
@@ -68,7 +71,7 @@ contract FarmerNft is ERC721 {
                         '", "description": "',
                         description,
                         '", "image": "ipfs://',
-                        "", //TODO: 画像は事前のipfsで
+                        "", //TODO: 画像は事前のipfsで用意
                         '"}' //TODO: この他の属性を追加するか
                     ) // これの正式形式がわからん
                 )
@@ -80,7 +83,7 @@ contract FarmerNft is ERC721 {
         return output;
     }
 
-    function available() public view returns (bool) {
+    function isExpired() public view returns (bool) {
         if (block.timestamp < expirationDate) {
             return true;
         } else {
@@ -88,14 +91,14 @@ contract FarmerNft is ERC721 {
         }
     }
 
-    function end() public {
-        require(available() == false, "still available");
+    function burnNFT() public {
+        require(isExpired() == false, "still available");
         for (uint256 id = 0; id < _tokenIds.current(); id++) {
             _burn(id);
         }
     }
 
-    function allOwners() public view returns (address[] memory) {
+    function getTokenOwners() public view returns (address[] memory) {
         address[] memory owners = new address[](_tokenIds.current());
         for (uint256 index = 0; index < _tokenIds.current(); index++) {
             owners[index] = ownerOf(index);

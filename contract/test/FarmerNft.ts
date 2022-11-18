@@ -21,6 +21,7 @@ describe("FarmerNft", function () {
 
     const FarmerNft = await ethers.getContractFactory("FarmerNft");
     const farmerNft = await FarmerNft.deploy(
+      accounts[0].address,
       farmerName,
       name,
       symbol,
@@ -42,7 +43,7 @@ describe("FarmerNft", function () {
     it("basic", async function () {
       const { userAccounts, farmerNft } = await loadFixture(deployContract);
 
-      await farmerNft.mint(userAccounts[0].address);
+      await farmerNft.mintNFT(userAccounts[0].address);
 
       expect(await farmerNft.ownerOf(0)).to.equal(userAccounts[0].address);
     });
@@ -53,10 +54,10 @@ describe("FarmerNft", function () {
       );
 
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
-        await farmerNft.mint(userAccounts[0].address);
+        await farmerNft.mintNFT(userAccounts[0].address);
       }
 
-      await expect(farmerNft.mint(userAccounts[0].address)).to.be.reverted;
+      await expect(farmerNft.mintNFT(userAccounts[0].address)).to.be.reverted;
     });
   });
 
@@ -64,31 +65,31 @@ describe("FarmerNft", function () {
     it("basic", async function () {
       const { userAccounts, farmerNft } = await loadFixture(deployContract);
 
-      await farmerNft.mint(userAccounts[0].address);
+      await farmerNft.mintNFT(userAccounts[0].address);
 
       console.log("URI: ", await farmerNft.tokenURI(0));
     });
   });
 
-  describe("end", function () {
+  describe("burnNFT", function () {
     it("basic", async function () {
       const { userAccounts, farmerNft } = await loadFixture(deployContract);
 
-      await farmerNft.mint(userAccounts[0].address);
+      await farmerNft.mintNFT(userAccounts[0].address);
 
       expect(await farmerNft.ownerOf(0)).to.equal(userAccounts[0].address);
 
       await time.increase(oneWeekInSecond * 2);
 
-      await farmerNft.end();
+      await farmerNft.burnNFT();
 
       expect(await farmerNft.balanceOf(userAccounts[0].address)).to.equal(0);
     });
 
-    it("revert when call end before expiration", async function () {
+    it("revert when call burnNFT before expiration", async function () {
       const { farmerNft } = await loadFixture(deployContract);
 
-      await expect(farmerNft.end()).to.be.reverted;
+      await expect(farmerNft.burnNFT()).to.be.reverted;
     });
   });
 
@@ -99,10 +100,10 @@ describe("FarmerNft", function () {
       );
 
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
-        await farmerNft.mint(userAccounts[cnt].address);
+        await farmerNft.mintNFT(userAccounts[cnt].address);
       }
 
-      const owners = await farmerNft.allOwners();
+      const owners = await farmerNft.getTokenOwners();
 
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
         expect(owners[cnt]).to.equal(userAccounts[cnt].address);

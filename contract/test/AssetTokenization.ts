@@ -39,7 +39,7 @@ describe("AssetTokenization", function () {
 
       await assetTokenization
         .connect(userAccounts[0])
-        .generateNft(
+        .generateNftContract(
           farmerName,
           name,
           symbol,
@@ -51,7 +51,7 @@ describe("AssetTokenization", function () {
 
       await assetTokenization
         .connect(userAccounts[1])
-        .generateNft(
+        .generateNftContract(
           farmerName,
           name,
           symbol,
@@ -61,7 +61,7 @@ describe("AssetTokenization", function () {
           expirationDate
         );
 
-      const nfts = await assetTokenization.allNftDetails();
+      const nfts = await assetTokenization.getNftContractsDetails();
 
       expect(nfts[0].farmerName).to.equal(farmerName);
       expect(nfts[0].name).to.equal(name);
