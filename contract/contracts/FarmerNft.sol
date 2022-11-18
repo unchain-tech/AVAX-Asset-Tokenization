@@ -42,6 +42,7 @@ contract FarmerNft is ERC721 {
     //TODO 支払いトークンはavaxにして簡易化するか
     function mintNFT(address to) public {
         require(availableMint > 0, "Not enough nft");
+        require(isExpired() == false, "Already expired");
 
         uint256 newItemId = _tokenIds.current();
         _safeMint(to, newItemId);
@@ -83,16 +84,17 @@ contract FarmerNft is ERC721 {
         return output;
     }
 
+    //TODO block.timestampを使っていいのかについて考察・注記
     function isExpired() public view returns (bool) {
         if (block.timestamp < expirationDate) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
     function burnNFT() public {
-        require(isExpired() == false, "still available");
+        require(isExpired() == true, "still available");
         for (uint256 id = 0; id < _tokenIds.current(); id++) {
             _burn(id);
         }
