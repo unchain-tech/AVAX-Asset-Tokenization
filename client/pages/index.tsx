@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
 import { useWallet } from "../hooks/useWallet";
 import Container from "../components/Container/Container";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const { currentAccount, connectWallet } = useWallet();
@@ -24,7 +25,13 @@ const Home: NextPage = () => {
           </div>
         )}
       </div>
-      <Container currentAccount={currentAccount} />
+      {/* <Container currentAccount={currentAccount} /> */}
+      <Link href="/Page1">
+        <h2>page1 &rarr;</h2>
+      </Link>
+      <Link href="/Page2">
+        <h2>page2 &rarr;</h2>
+      </Link>
     </div>
   );
 };
