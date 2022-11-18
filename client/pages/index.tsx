@@ -1,32 +1,10 @@
 import type { NextPage } from "next";
-import styles from "../styles/Home.module.css";
-import { useWallet } from "../hooks/useWallet";
-import Container from "../components/Container/Container";
 import Link from "next/link";
-import CurrentAccountContext from "../context/CurrentAccountProvider";
-import { useContext } from "react";
+import DefaultLayout from "../components/Layout/DefaultLayout";
 
 const Home: NextPage = () => {
-  const [currentAccount, connectWallet] = useContext(CurrentAccountContext);
-
   return (
-    <div className={styles.pageBody}>
-      <div className={styles.navBar}>
-        <div className={styles.rightHeader}>
-          <div className={styles.appName}> Lending </div>
-        </div>
-        {currentAccount == undefined ? (
-          <div className={styles.connectBtn} onClick={connectWallet}>
-            {" "}
-            Connect to wallet{" "}
-          </div>
-        ) : (
-          <div className={styles.connected}>
-            {" "}
-            {"Connected to " + currentAccount}{" "}
-          </div>
-        )}
-      </div>
+    <DefaultLayout home>
       {/* <Container currentAccount={currentAccount} /> */}
       <Link href="/Page1">
         <h2>page1 &rarr;</h2>
@@ -34,7 +12,7 @@ const Home: NextPage = () => {
       <Link href="/Page2">
         <h2>page2 &rarr;</h2>
       </Link>
-    </div>
+    </DefaultLayout>
   );
 };
 
