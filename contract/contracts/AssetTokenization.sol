@@ -8,29 +8,32 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
 
 contract AssetTokenization is AutomationCompatibleInterface {
-    FarmNft[] allNftContracts;
-    uint256 availableNftContractCount;
+    address[] public farmers;
     mapping(address => FarmNft) farmerToNftContract;
-    //TODO フロントからループを回して, それぞれreturnする
 
     struct nftContractDetails {
+        address farmerAddress;
         string farmerName;
         string name;
         string symbol;
         string description;
-        uint256 id;
         uint256 totalMint;
         uint256 availableMint;
         uint256 price;
         uint256 expirationDate;
     }
 
-    function farmerDeployedNft(address farmer) internal view returns (bool) {
+    function isContractDeployed(address farmer) internal view returns (bool) {
         return address(farmerToNftContract[farmer]) != address(0);
     }
 
-    function isContractDeployed(uint256 index) internal view returns (bool) {
-        return address(allNftContracts[index]) != address(0);
+    function addFarmer(address newFarmer) internal {
+        for (uint256 index = 0; index < farmers.length; index++) {
+            if (newFarmer == farmers[index]) {
+                return;
+            }
+        }
+        farmers.push(newFarmer);
     }
 
     function generateNftContract(
@@ -43,9 +46,11 @@ contract AssetTokenization is AutomationCompatibleInterface {
         uint256 _expirationDate
     ) public {
         require(
-            farmerDeployedNft(msg.sender) == false,
+            isContractDeployed(msg.sender) == false,
             "Your token is already deployed"
         );
+
+        addFarmer(msg.sender);
 
         FarmNft newNft = new FarmNft(
             msg.sender,
@@ -58,44 +63,33 @@ contract AssetTokenization is AutomationCompatibleInterface {
             _expirationDate
         );
 
-        allNftContracts.push(newNft);
-        availableNftContractCount++;
         farmerToNftContract[msg.sender] = newNft;
     }
 
-    function getNftContractsDetails()
+    function getNftContractDetails(address farmerAddress)
         public
         view
-        returns (nftContractDetails[] memory)
+        returns (nftContractDetails memory)
     {
-        nftContractDetails[] memory deltails = new nftContractDetails[](
-            availableNftContractCount
+        nftContractDetails memory details;
+        details = nftContractDetails(
+            farmerToNftContract[farmerAddress].farmerAddress(),
+            farmerToNftContract[farmerAddress].farmerName(),
+            farmerToNftContract[farmerAddress].name(),
+            farmerToNftContract[farmerAddress].symbol(),
+            farmerToNftContract[farmerAddress].description(),
+            farmerToNftContract[farmerAddress].totalMint(),
+            farmerToNftContract[farmerAddress].availableMint(),
+            farmerToNftContract[farmerAddress].price(),
+            farmerToNftContract[farmerAddress].expirationDate()
         );
-        uint256 counter;
 
-        for (uint256 index = 0; index < allNftContracts.length; index++) {
-            if (isContractDeployed(index)) {
-                deltails[counter] = nftContractDetails(
-                    allNftContracts[index].farmerName(),
-                    allNftContracts[index].name(),
-                    allNftContracts[index].symbol(),
-                    allNftContracts[index].description(),
-                    index,
-                    allNftContracts[index].totalMint(),
-                    allNftContracts[index].availableMint(),
-                    allNftContracts[index].price(),
-                    allNftContracts[index].expirationDate()
-                );
-                counter++;
-            }
-        }
-
-        return deltails;
+        return details;
     }
 
-    function buyNft(uint256 index) public {
-        require(isContractDeployed(index), "Not yet deployed");
-        allNftContracts[index].mintNFT(msg.sender);
+    function buyNft(address farmerAddress) public {
+        require(isContractDeployed(farmerAddress), "Not yet deployed");
+        farmerToNftContract[farmerAddress].mintNFT(msg.sender);
     }
 
     function getBuyers() public view returns (address[] memory) {
@@ -117,11 +111,11 @@ contract AssetTokenization is AutomationCompatibleInterface {
             bytes memory /* optional data. return initial value in this code */
         )
     {
-        for (uint256 index = 0; index < allNftContracts.length; index++) {
-            if (isContractDeployed(index) == false) {
+        for (uint256 index = 0; index < farmers.length; index++) {
+            if (isContractDeployed(farmers[index]) == false) {
                 continue;
             }
-            if (allNftContracts[index].isExpired() == true) {
+            if (farmerToNftContract[farmers[index]].isExpired() == true) {
                 return (true, "");
             }
         }
@@ -133,16 +127,14 @@ contract AssetTokenization is AutomationCompatibleInterface {
     function performUpkeep(
         bytes calldata /* optional data. don't use in this code */
     ) external override {
-        for (uint256 index = 0; index < allNftContracts.length; index++) {
-            if (isContractDeployed(index) == false) {
+        for (uint256 index = 0; index < farmers.length; index++) {
+            address farmer = farmers[index];
+            if (isContractDeployed(farmer) == false) {
                 continue;
             }
-            if (allNftContracts[index].isExpired() == true) {
-                allNftContracts[index].burnNFT();
-                address farmer = allNftContracts[index].farmerAddress();
+            if (farmerToNftContract[farmer].isExpired() == true) {
+                farmerToNftContract[farmer].burnNFT();
                 delete farmerToNftContract[farmer];
-                delete allNftContracts[index];
-                availableNftContractCount--;
             }
         }
     }
