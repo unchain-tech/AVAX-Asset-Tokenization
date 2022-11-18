@@ -16,7 +16,7 @@
 - NFTコントラクトのデプロイ, コントラクトのアドレス管理。
 - 期限切れNFTのバーンを自動で行うために, chainlinkが用意した`AutomationCompatibleInterface`を実装。
 
-### `contracts/FarmerNft.sol`:
+### `contracts/FarmNft.sol`:
 
 - 農家毎にデプロイするNFTコントラクト。
 

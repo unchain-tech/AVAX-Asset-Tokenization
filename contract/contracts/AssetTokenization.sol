@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import "./FarmerNft.sol";
+import "./FarmNft.sol";
 import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
 
 contract AssetTokenization is AutomationCompatibleInterface {
-    FarmerNft[] allNftContracts;
+    FarmNft[] allNftContracts;
     uint256 availableNftContractCount;
-    mapping(address => FarmerNft) farmerToNftContract;
+    mapping(address => FarmNft) farmerToNftContract;
+    //TODO フロントからループを回して, それぞれreturnする
 
     struct nftContractDetails {
         string farmerName;
@@ -46,7 +47,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
             "Your token is already deployed"
         );
 
-        FarmerNft newNft = new FarmerNft(
+        FarmNft newNft = new FarmNft(
             msg.sender,
             _farmerName,
             _name,
@@ -101,6 +102,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
         return farmerToNftContract[msg.sender].getTokenOwners();
     }
 
+    //TODO なぜchianlinkなのか調べておく
     // for upkeep that chainlink automation function.
     // if checkUpkeep() returns true, chainlink automatically runs performUpkeep() that follows below.
     // check whether there are expired contracts.
@@ -119,7 +121,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
             if (isContractDeployed(index) == false) {
                 continue;
             }
-            if (allNftContracts[index].isExpired() == false) {
+            if (allNftContracts[index].isExpired() == true) {
                 return (true, "");
             }
         }
@@ -135,7 +137,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
             if (isContractDeployed(index) == false) {
                 continue;
             }
-            if (allNftContracts[index].isExpired() == false) {
+            if (allNftContracts[index].isExpired() == true) {
                 allNftContracts[index].burnNFT();
                 address farmer = allNftContracts[index].farmerAddress();
                 delete farmerToNftContract[farmer];

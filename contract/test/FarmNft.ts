@@ -3,7 +3,7 @@ import { BigNumber } from "ethers";
 import { expect } from "chai";
 import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
 
-describe("FarmerNft", function () {
+describe("farmNft", function () {
   const oneWeekInSecond = 60 * 60 * 24 * 7;
 
   async function deployContract() {
@@ -19,8 +19,8 @@ describe("FarmerNft", function () {
       .div(1000) // in second
       .add(oneWeekInSecond); // one week later
 
-    const FarmerNft = await ethers.getContractFactory("FarmerNft");
-    const farmerNft = await FarmerNft.deploy(
+    const FarmNft = await ethers.getContractFactory("FarmNft");
+    const farmNft = await FarmNft.deploy(
       accounts[0].address,
       farmerName,
       name,
@@ -34,76 +34,76 @@ describe("FarmerNft", function () {
     return {
       deployAccount: accounts[0],
       userAccounts: accounts.slice(1, accounts.length),
-      farmerNft,
+      farmNft,
       totalMint,
     };
   }
 
   describe("mint", function () {
     it("basic", async function () {
-      const { userAccounts, farmerNft } = await loadFixture(deployContract);
+      const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      await farmerNft.mintNFT(userAccounts[0].address);
+      await farmNft.mintNFT(userAccounts[0].address);
 
-      expect(await farmerNft.ownerOf(0)).to.equal(userAccounts[0].address);
+      expect(await farmNft.ownerOf(0)).to.equal(userAccounts[0].address);
     });
 
     it("revert when not enough nft to mint", async function () {
-      const { userAccounts, farmerNft, totalMint } = await loadFixture(
+      const { userAccounts, farmNft, totalMint } = await loadFixture(
         deployContract
       );
 
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
-        await farmerNft.mintNFT(userAccounts[0].address);
+        await farmNft.mintNFT(userAccounts[0].address);
       }
 
-      await expect(farmerNft.mintNFT(userAccounts[0].address)).to.be.reverted;
+      await expect(farmNft.mintNFT(userAccounts[0].address)).to.be.reverted;
     });
   });
 
   describe("tokenURI", function () {
     it("basic", async function () {
-      const { userAccounts, farmerNft } = await loadFixture(deployContract);
+      const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      await farmerNft.mintNFT(userAccounts[0].address);
+      await farmNft.mintNFT(userAccounts[0].address);
 
-      console.log("URI: ", await farmerNft.tokenURI(0));
+      console.log("URI: ", await farmNft.tokenURI(0));
     });
   });
 
   describe("burnNFT", function () {
     it("basic", async function () {
-      const { userAccounts, farmerNft } = await loadFixture(deployContract);
+      const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      await farmerNft.mintNFT(userAccounts[0].address);
+      await farmNft.mintNFT(userAccounts[0].address);
 
-      expect(await farmerNft.ownerOf(0)).to.equal(userAccounts[0].address);
+      expect(await farmNft.ownerOf(0)).to.equal(userAccounts[0].address);
 
       await time.increase(oneWeekInSecond * 2);
 
-      await farmerNft.burnNFT();
+      await farmNft.burnNFT();
 
-      expect(await farmerNft.balanceOf(userAccounts[0].address)).to.equal(0);
+      expect(await farmNft.balanceOf(userAccounts[0].address)).to.equal(0);
     });
 
     it("revert when call burnNFT before expiration", async function () {
-      const { farmerNft } = await loadFixture(deployContract);
+      const { farmNft } = await loadFixture(deployContract);
 
-      await expect(farmerNft.burnNFT()).to.be.reverted;
+      await expect(farmNft.burnNFT()).to.be.reverted;
     });
   });
 
   describe("allOwners", function () {
     it("basic", async function () {
-      const { userAccounts, farmerNft, totalMint } = await loadFixture(
+      const { userAccounts, farmNft, totalMint } = await loadFixture(
         deployContract
       );
 
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
-        await farmerNft.mintNFT(userAccounts[cnt].address);
+        await farmNft.mintNFT(userAccounts[cnt].address);
       }
 
-      const owners = await farmerNft.getTokenOwners();
+      const owners = await farmNft.getTokenOwners();
 
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
         expect(owners[cnt]).to.equal(userAccounts[cnt].address);
