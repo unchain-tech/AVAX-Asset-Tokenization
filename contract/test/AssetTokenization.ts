@@ -131,58 +131,72 @@ describe("AssetTokenization", function () {
     });
   });
 
-  // describe("checkUpkeep", function () {
-  //   it("should return valid boolean", async function () {
-  //     const { userAccounts, assetTokenization } = await loadFixture(
-  //       deployContract
-  //     );
+  describe("upkeep", function () {
+    it("checkUpkeep and performUpkeep", async function () {
+      const { userAccounts, assetTokenization } = await loadFixture(
+        deployContract
+      );
 
-  //     const farmerName = "farmer";
-  //     const name = "nft";
-  //     const symbol = "symbol";
-  //     const description = "description";
-  //     const totalMint = BigNumber.from(5);
-  //     const price = BigNumber.from(100);
-  //     const expirationDate = BigNumber.from(Date.now())
-  //       .div(1000) // in second
-  //       .add(oneWeekInSecond); // one week later
+      // 定数用意
+      const farmerName = "farmer";
+      const name = "nft";
+      const symbol = "symbol";
+      const description = "description";
+      const totalMint = BigNumber.from(5);
+      const price = BigNumber.from(100);
 
-  //     const account1 = userAccounts[0];
-  //     const account2 = userAccounts[1];
+      /* 期限に余裕があるnftコントラクトの用意 */
+      const account1 = userAccounts[0];
+      const expirationDateAfterNow = BigNumber.from(Date.now())
+        .div(1000) // in second
+        .add(oneWeekInSecond); // one week later
 
-  //     await assetTokenization
-  //       .connect(account1)
-  //       .generateNftContract(
-  //         farmerName,
-  //         name,
-  //         symbol,
-  //         description,
-  //         totalMint,
-  //         price,
-  //         expirationDate
-  //       );
+      // デプロイ
+      await assetTokenization
+        .connect(account1)
+        .generateNftContract(
+          farmerName,
+          name,
+          symbol,
+          description,
+          totalMint,
+          price,
+          expirationDateAfterNow
+        );
 
-  //     await assetTokenization
-  //       .connect(account2)
-  //       .generateNftContract(
-  //         farmerName,
-  //         name,
-  //         symbol,
-  //         description,
-  //         totalMint,
-  //         price,
-  //         expirationDate
-  //       );
+      const [return1] = await assetTokenization.checkUpkeep("0x00");
 
-  //     const [returnBefore] = await assetTokenization.checkUpkeep("0x00");
+      // 期限切れのnftコントラクトがないのでfalse
+      expect(return1).to.equal(false);
 
-  //     expect(returnBefore).to.equal(false);
+      /* 期限切れのnftコントラクトを用意 */
+      const account2 = userAccounts[1];
+      const expirationDateBeforeNow = BigNumber.from(Date.now())
+        .div(1000) // in second
+        .sub(1); // back to before now
 
-  //     time.increase(oneWeekInSecond * 2); // これをするとなぜか次のFarmNftのテストがこける
+      // デプロイ
+      await assetTokenization
+        .connect(account2)
+        .generateNftContract(
+          farmerName,
+          name,
+          symbol,
+          description,
+          totalMint,
+          price,
+          expirationDateBeforeNow
+        );
 
-  //     const [returnAfter] = await assetTokenization.checkUpkeep("0x00");
+      const [return2] = await assetTokenization.checkUpkeep("0x00");
 
-  //     expect(returnAfter).to.equal(true);
-  //   });
-  // });
+      // 期限切れのnftコントラクトがあるのでtrue
+      expect(return2).to.equal(true);
+
+      // await assetTokenization.performUpkeep("0x00");
+
+      // await expect(assetTokenization.getNftContractDetails(account2.address)).to
+      //   .be.reverted;
+    });
+  });
 });

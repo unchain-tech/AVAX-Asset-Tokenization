@@ -23,7 +23,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
         uint256 expirationDate;
     }
 
-    function isContractDeployed(address farmer) internal view returns (bool) {
+    function availableContract(address farmer) internal view returns (bool) {
         return address(farmerToNftContract[farmer]) != address(0);
     }
 
@@ -46,7 +46,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
         uint256 _expirationDate
     ) public {
         require(
-            isContractDeployed(msg.sender) == false,
+            availableContract(msg.sender) == false,
             "Your token is already deployed"
         );
 
@@ -88,7 +88,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
     }
 
     function buyNft(address farmerAddress) public payable {
-        require(isContractDeployed(farmerAddress), "Not yet deployed");
+        require(availableContract(farmerAddress), "Not yet deployed");
         farmerToNftContract[farmerAddress].mintNFT{value: msg.value}(
             msg.sender
         );
@@ -113,7 +113,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
         )
     {
         for (uint256 index = 0; index < farmers.length; index++) {
-            if (!isContractDeployed(farmers[index])) {
+            if (!availableContract(farmers[index])) {
                 continue;
             }
             if (farmerToNftContract[farmers[index]].isExpired()) {
@@ -130,7 +130,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
     ) external override {
         for (uint256 index = 0; index < farmers.length; index++) {
             address farmer = farmers[index];
-            if (!isContractDeployed(farmer)) {
+            if (!availableContract(farmer)) {
                 continue;
             }
             if (farmerToNftContract[farmer].isExpired()) {
