@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styles from "./FarmerContainer.module.css";
+import TokenizeForm from "../Form/TokenizeForm";
+import ViewBuyersForm from "../Form/ViewBuyersForm";
 
 export default function FarmerContainer() {
   // farmer actions
@@ -36,9 +38,10 @@ export default function FarmerContainer() {
             {ViewBuyers}
           </div>
         </div>
-
-        {activeTab === Tokenize && Tokenize}
-        {activeTab === ViewBuyers && ViewBuyers}
+        <div className={styles.tabBody}>
+          {activeTab === Tokenize && <TokenizeForm />}
+          {activeTab === ViewBuyers && <ViewBuyersForm />}
+        </div>
       </div>
     </div>
   );
