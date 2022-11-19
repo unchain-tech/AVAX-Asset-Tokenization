@@ -113,10 +113,10 @@ contract AssetTokenization is AutomationCompatibleInterface {
         )
     {
         for (uint256 index = 0; index < farmers.length; index++) {
-            if (isContractDeployed(farmers[index]) == false) {
+            if (!isContractDeployed(farmers[index])) {
                 continue;
             }
-            if (farmerToNftContract[farmers[index]].isExpired() == true) {
+            if (farmerToNftContract[farmers[index]].isExpired()) {
                 return (true, "");
             }
         }
@@ -130,10 +130,10 @@ contract AssetTokenization is AutomationCompatibleInterface {
     ) external override {
         for (uint256 index = 0; index < farmers.length; index++) {
             address farmer = farmers[index];
-            if (isContractDeployed(farmer) == false) {
+            if (!isContractDeployed(farmer)) {
                 continue;
             }
-            if (farmerToNftContract[farmer].isExpired() == true) {
+            if (farmerToNftContract[farmer].isExpired()) {
                 farmerToNftContract[farmer].burnNFT();
                 delete farmerToNftContract[farmer];
             }

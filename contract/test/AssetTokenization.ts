@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { BigNumber, Overrides } from "ethers";
 import { expect } from "chai";
-import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
+import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
 
 describe("AssetTokenization", function () {
   const oneWeekInSecond = 60 * 60 * 24 * 7;
@@ -130,4 +130,59 @@ describe("AssetTokenization", function () {
       ).to.changeEtherBalances([account1, account2], [price, -price]);
     });
   });
+
+  // describe("checkUpkeep", function () {
+  //   it("should return valid boolean", async function () {
+  //     const { userAccounts, assetTokenization } = await loadFixture(
+  //       deployContract
+  //     );
+
+  //     const farmerName = "farmer";
+  //     const name = "nft";
+  //     const symbol = "symbol";
+  //     const description = "description";
+  //     const totalMint = BigNumber.from(5);
+  //     const price = BigNumber.from(100);
+  //     const expirationDate = BigNumber.from(Date.now())
+  //       .div(1000) // in second
+  //       .add(oneWeekInSecond); // one week later
+
+  //     const account1 = userAccounts[0];
+  //     const account2 = userAccounts[1];
+
+  //     await assetTokenization
+  //       .connect(account1)
+  //       .generateNftContract(
+  //         farmerName,
+  //         name,
+  //         symbol,
+  //         description,
+  //         totalMint,
+  //         price,
+  //         expirationDate
+  //       );
+
+  //     await assetTokenization
+  //       .connect(account2)
+  //       .generateNftContract(
+  //         farmerName,
+  //         name,
+  //         symbol,
+  //         description,
+  //         totalMint,
+  //         price,
+  //         expirationDate
+  //       );
+
+  //     const [returnBefore] = await assetTokenization.checkUpkeep("0x00");
+
+  //     expect(returnBefore).to.equal(false);
+
+  //     time.increase(oneWeekInSecond * 2); // これをするとなぜか次のFarmNftのテストがこける
+
+  //     const [returnAfter] = await assetTokenization.checkUpkeep("0x00");
+
+  //     expect(returnAfter).to.equal(true);
+  //   });
+  // });
 });

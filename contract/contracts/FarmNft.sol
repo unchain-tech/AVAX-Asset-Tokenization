@@ -84,15 +84,15 @@ contract FarmNft is ERC721 {
     }
 
     function isExpired() public view returns (bool) {
-        if (block.timestamp < expirationDate) {
-            return false;
-        } else {
+        if (expirationDate < block.timestamp) {
             return true;
+        } else {
+            return false;
         }
     }
 
     function burnNFT() public {
-        require(isExpired() == true, "still available");
+        require(isExpired(), "still available");
         for (uint256 id = 0; id < _tokenIds.current(); id++) {
             _burn(id);
         }
