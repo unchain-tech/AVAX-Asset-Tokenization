@@ -193,10 +193,11 @@ describe("AssetTokenization", function () {
       // 期限切れのnftコントラクトがあるのでtrue
       expect(return2).to.equal(true);
 
-      // await assetTokenization.performUpkeep("0x00");
+      await assetTokenization.performUpkeep("0x00");
 
-      // await expect(assetTokenization.getNftContractDetails(account2.address)).to
-      //   .be.reverted;
+      // 期限切れのnftコントラクトの情報は取得できない
+      await expect(assetTokenization.getNftContractDetails(account2.address)).to
+        .be.reverted;
     });
   });
 });
