@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { BigNumber } from "ethers";
+import { BigNumber, Overrides } from "ethers";
 import { expect } from "chai";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
@@ -89,6 +89,47 @@ describe("AssetTokenization", function () {
       expect(details2.availableMint).to.equal(totalMint);
       expect(details2.price).to.equal(price);
       expect(details2.expirationDate).to.equal(expirationDate);
+    });
+  });
+
+  describe("buyNFT", function () {
+    it("balance should be change", async function () {
+      const { userAccounts, assetTokenization } = await loadFixture(
+        deployContract
+      );
+
+      const farmerName = "farmer";
+      const name = "nft";
+      const symbol = "symbol";
+      const description = "description";
+      const totalMint = BigNumber.from(5);
+      const price = BigNumber.from(100);
+      const expirationDate = BigNumber.from(Date.now())
+        .div(1000) // in second
+        .add(oneWeekInSecond); // one week later
+
+      const account1 = userAccounts[0];
+      const account2 = userAccounts[1];
+
+      await assetTokenization
+        .connect(account1)
+        .generateNftContract(
+          farmerName,
+          name,
+          symbol,
+          description,
+          totalMint,
+          price,
+          expirationDate
+        );
+
+      const value = 1;
+
+      await expect(
+        assetTokenization
+          .connect(account2)
+          .buyNft(account1.address, { value: value } as Overrides)
+      ).to.changeEtherBalances([account1, account2], [value, -value]);
     });
   });
 });

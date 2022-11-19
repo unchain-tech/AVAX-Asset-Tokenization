@@ -87,9 +87,11 @@ contract AssetTokenization is AutomationCompatibleInterface {
         return details;
     }
 
-    function buyNft(address farmerAddress) public {
+    function buyNft(address farmerAddress) public payable {
         require(isContractDeployed(farmerAddress), "Not yet deployed");
-        farmerToNftContract[farmerAddress].mintNFT(msg.sender);
+        farmerToNftContract[farmerAddress].mintNFT{value: msg.value}(
+            msg.sender
+        );
     }
 
     function getBuyers() public view returns (address[] memory) {
