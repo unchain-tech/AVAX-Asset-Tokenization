@@ -23,13 +23,11 @@ contract FarmNft is ERC721 {
     constructor(
         address _famerAddress,
         string memory _farmerName,
-        string memory _name,
-        string memory _symbol,
         string memory _description,
         uint256 _totalMint,
         uint256 _price,
         uint256 _expirationDate
-    ) ERC721(_name, _symbol) {
+    ) ERC721("Farm NFT", "FARM") {
         farmerAddress = _famerAddress;
         farmerName = _farmerName;
         description = _description;

@@ -44,8 +44,6 @@ describe("AssetTokenization", function () {
         .connect(account1)
         .generateNftContract(
           farmerName,
-          name,
-          symbol,
           description,
           totalMint,
           price,
@@ -56,8 +54,6 @@ describe("AssetTokenization", function () {
         .connect(account2)
         .generateNftContract(
           farmerName,
-          name,
-          symbol,
           description,
           totalMint,
           price,
@@ -69,8 +65,6 @@ describe("AssetTokenization", function () {
       );
       expect(details1.farmerAddress).to.equal(account1.address);
       expect(details1.farmerName).to.equal(farmerName);
-      expect(details1.name).to.equal(name);
-      expect(details1.symbol).to.equal(symbol);
       expect(details1.description).to.equal(description);
       expect(details1.totalMint).to.equal(totalMint);
       expect(details1.availableMint).to.equal(totalMint);
@@ -82,8 +76,6 @@ describe("AssetTokenization", function () {
       );
       expect(details2.farmerAddress).to.equal(account2.address);
       expect(details2.farmerName).to.equal(farmerName);
-      expect(details2.name).to.equal(name);
-      expect(details2.symbol).to.equal(symbol);
       expect(details2.description).to.equal(description);
       expect(details2.totalMint).to.equal(totalMint);
       expect(details2.availableMint).to.equal(totalMint);
@@ -115,8 +107,6 @@ describe("AssetTokenization", function () {
         .connect(account1)
         .generateNftContract(
           farmerName,
-          name,
-          symbol,
           description,
           totalMint,
           price,
@@ -156,8 +146,6 @@ describe("AssetTokenization", function () {
         .connect(account1)
         .generateNftContract(
           farmerName,
-          name,
-          symbol,
           description,
           totalMint,
           price,
@@ -180,8 +168,6 @@ describe("AssetTokenization", function () {
         .connect(account2)
         .generateNftContract(
           farmerName,
-          name,
-          symbol,
           description,
           totalMint,
           price,

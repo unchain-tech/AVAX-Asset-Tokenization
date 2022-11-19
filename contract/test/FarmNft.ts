@@ -23,8 +23,6 @@ describe("farmNft", function () {
     const farmNft = await FarmNft.deploy(
       accounts[0].address,
       farmerName,
-      name,
-      symbol,
       description,
       totalMint,
       price,

@@ -14,8 +14,6 @@ contract AssetTokenization is AutomationCompatibleInterface {
     struct nftContractDetails {
         address farmerAddress;
         string farmerName;
-        string name;
-        string symbol;
         string description;
         uint256 totalMint;
         uint256 availableMint;
@@ -38,8 +36,6 @@ contract AssetTokenization is AutomationCompatibleInterface {
 
     function generateNftContract(
         string memory _farmerName,
-        string memory _name,
-        string memory _symbol,
         string memory _description,
         uint256 _totalMint,
         uint256 _price,
@@ -55,8 +51,6 @@ contract AssetTokenization is AutomationCompatibleInterface {
         FarmNft newNft = new FarmNft(
             msg.sender,
             _farmerName,
-            _name,
-            _symbol,
             _description,
             _totalMint,
             _price,
@@ -75,8 +69,6 @@ contract AssetTokenization is AutomationCompatibleInterface {
         details = nftContractDetails(
             farmerToNftContract[farmerAddress].farmerAddress(),
             farmerToNftContract[farmerAddress].farmerName(),
-            farmerToNftContract[farmerAddress].name(),
-            farmerToNftContract[farmerAddress].symbol(),
             farmerToNftContract[farmerAddress].description(),
             farmerToNftContract[farmerAddress].totalMint(),
             farmerToNftContract[farmerAddress].availableMint(),
