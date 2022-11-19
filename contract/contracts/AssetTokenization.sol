@@ -96,7 +96,6 @@ contract AssetTokenization is AutomationCompatibleInterface {
         return farmerToNftContract[msg.sender].getTokenOwners();
     }
 
-    //TODO なぜchianlinkなのか調べておく
     // for upkeep that chainlink automation function.
     // if checkUpkeep() returns true, chainlink automatically runs performUpkeep() that follows below.
     // check whether there are expired contracts.

@@ -70,9 +70,9 @@ contract FarmNft is ERC721 {
                         '", "description": "',
                         description,
                         '", "image": "ipfs://',
-                        "", //TODO: 画像は事前のipfsで用意
-                        '"}' //TODO: この他の属性を追加するか
-                    ) // これの正式形式がわからん
+                        "bafybeica5xvnjfxvnrj7rrhle2vkfs4ptnnc2gfegxptc2lshvaw3yazcm", //TODO 画像が表示されない
+                        '"}'
+                    )
                 )
             )
         );
@@ -82,9 +82,6 @@ contract FarmNft is ERC721 {
         return output;
     }
 
-    //TODO block.timestampを使っていいのかについて考察・注記
-    // block.numberを使うのが一般的, ブロック生成間隔はある程度決まっている
-    // Avalancheではどうかを調べる
     function isExpired() public view returns (bool) {
         if (block.timestamp < expirationDate) {
             return false;
