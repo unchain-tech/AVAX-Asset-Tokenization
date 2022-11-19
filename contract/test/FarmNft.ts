@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { BigNumber } from "ethers";
+import { BigNumber, Overrides } from "ethers";
 import { expect } from "chai";
 import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
 
@@ -43,9 +43,12 @@ describe("farmNft", function () {
     it("basic", async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      await farmNft.mintNFT(userAccounts[0].address);
+      const account = userAccounts[0];
+      const price = await farmNft.price();
 
-      expect(await farmNft.ownerOf(0)).to.equal(userAccounts[0].address);
+      await farmNft.mintNFT(account.address, { value: price } as Overrides);
+
+      expect(await farmNft.ownerOf(0)).to.equal(account.address);
     });
 
     it("revert when not enough nft to mint", async function () {
@@ -53,11 +56,29 @@ describe("farmNft", function () {
         deployContract
       );
 
+      const account = userAccounts[0];
+      const price = await farmNft.price();
+
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
-        await farmNft.mintNFT(userAccounts[0].address);
+        await farmNft.mintNFT(account.address, { value: price } as Overrides);
       }
 
-      await expect(farmNft.mintNFT(userAccounts[0].address)).to.be.reverted;
+      await expect(
+        farmNft.mintNFT(account.address, { value: price } as Overrides)
+      ).to.be.reverted;
+    });
+
+    it("revert when not enough currency to mint", async function () {
+      const { userAccounts, farmNft, totalMint } = await loadFixture(
+        deployContract
+      );
+
+      const account = userAccounts[0];
+      const price = await farmNft.price();
+
+      await expect(
+        farmNft.mintNFT(account.address, { value: price.sub(1) } as Overrides)
+      ).to.be.reverted;
     });
   });
 
@@ -65,7 +86,12 @@ describe("farmNft", function () {
     it("basic", async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      await farmNft.mintNFT(userAccounts[0].address);
+      const account = userAccounts[0];
+      const price = await farmNft.price();
+
+      await farmNft.mintNFT(account.address, {
+        value: price,
+      } as Overrides);
 
       console.log("URI: ", await farmNft.tokenURI(0));
     });
@@ -75,15 +101,18 @@ describe("farmNft", function () {
     it("basic", async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      await farmNft.mintNFT(userAccounts[0].address);
+      const account = userAccounts[0];
+      const price = await farmNft.price();
 
-      expect(await farmNft.ownerOf(0)).to.equal(userAccounts[0].address);
+      await farmNft.mintNFT(account.address, { value: price } as Overrides);
+
+      expect(await farmNft.ownerOf(0)).to.equal(account.address);
 
       await time.increase(oneWeekInSecond * 2);
 
       await farmNft.burnNFT();
 
-      expect(await farmNft.balanceOf(userAccounts[0].address)).to.equal(0);
+      expect(await farmNft.balanceOf(account.address)).to.equal(0);
     });
 
     it("revert when call burnNFT before expiration", async function () {
@@ -99,8 +128,12 @@ describe("farmNft", function () {
         deployContract
       );
 
+      const price = await farmNft.price();
+
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
-        await farmNft.mintNFT(userAccounts[cnt].address);
+        await farmNft.mintNFT(userAccounts[cnt].address, {
+          value: price,
+        } as Overrides);
       }
 
       const owners = await farmNft.getTokenOwners();

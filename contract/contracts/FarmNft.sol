@@ -42,7 +42,7 @@ contract FarmNft is ERC721 {
     function mintNFT(address to) public payable {
         require(availableMint > 0, "Not enough nft");
         require(isExpired() == false, "Already expired");
-        //TODO require(msg.value == price);, usdcを使うことを推奨するのもいいかも
+        require(msg.value == price);
 
         (bool success, ) = (farmerAddress).call{value: msg.value}("");
         require(success, "Failed to withdraw AVAX");

@@ -123,13 +123,11 @@ describe("AssetTokenization", function () {
           expirationDate
         );
 
-      const value = 1;
-
       await expect(
         assetTokenization
           .connect(account2)
-          .buyNft(account1.address, { value: value } as Overrides)
-      ).to.changeEtherBalances([account1, account2], [value, -value]);
+          .buyNft(account1.address, { value: price } as Overrides)
+      ).to.changeEtherBalances([account1, account2], [price, -price]);
     });
   });
 });
