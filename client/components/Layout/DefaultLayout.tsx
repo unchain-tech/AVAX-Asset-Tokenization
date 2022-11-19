@@ -8,7 +8,7 @@ type Props = {
   home?: boolean;
 };
 
-export default function Layout({ children, home }: Props) {
+export default function DefaultLayout({ children, home }: Props) {
   const [currentAccount, connectWallet] = useContext(CurrentAccountContext);
 
   return (
