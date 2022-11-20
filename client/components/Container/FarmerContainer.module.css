@@ -11,18 +11,14 @@
 }
 
 .tabStyle {
-    text-align: center;
     padding: 10px;
-    font: 18px;
     color: white;
     display: flex;
     align-items: center;
-    justify-content: center;
     height: 30px;
     margin-top: 15px;
     margin-right: 10px;
     border-radius: 15px;
-    cursor: pointer;
 }
 
 .tabStyle:hover {
@@ -37,8 +33,6 @@
     margin: 0px auto;
     width: 800px;
     padding-top: 5px;
-    justify-content: center;
-    align-items: center;
     background-color: #0e0e10;
     border-radius: 0px 0px 19px 19px;
     border-top: 0px;
