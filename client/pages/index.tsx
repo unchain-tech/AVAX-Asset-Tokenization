@@ -5,7 +5,6 @@ import DefaultLayout from "../components/Layout/DefaultLayout";
 const Home: NextPage = () => {
   return (
     <DefaultLayout home>
-      {/* <Container currentAccount={currentAccount} /> */}
       <Link href="/FarmerPage">
         <h2>FarmerPage &rarr;</h2>
       </Link>
