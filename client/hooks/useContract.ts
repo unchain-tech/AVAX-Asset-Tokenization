@@ -5,7 +5,7 @@ import { AssetTokenization as AssetTokenizationType } from "../types/AssetTokeni
 import { getEthereum } from "../utils/ethereum";
 
 export const AssetTokenizationAddress =
-  "0x51d097E82BE6b12d5f52b8aDC9796588bCe83051";
+  "0xe5E0B122071029E3DCd3Ccc95f3BdDCce8eDb7Ca";
 
 type PropsUseContract = {
   currentAccount: string | undefined;

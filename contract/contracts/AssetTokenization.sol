@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
 
 contract AssetTokenization is AutomationCompatibleInterface {
-    address[] public farmers;
+    address[] farmers;
     mapping(address => FarmNft) farmerToNftContract;
 
     struct nftContractDetails {
@@ -21,7 +21,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
         uint256 expirationDate;
     }
 
-    function availableContract(address farmer) internal view returns (bool) {
+    function availableContract(address farmer) public view returns (bool) {
         return address(farmerToNftContract[farmer]) != address(0);
     }
 
@@ -65,6 +65,8 @@ contract AssetTokenization is AutomationCompatibleInterface {
         view
         returns (nftContractDetails memory)
     {
+        require(availableContract(farmerAddress), "not available");
+
         nftContractDetails memory details;
         details = nftContractDetails(
             farmerToNftContract[farmerAddress].farmerAddress(),
@@ -88,6 +90,10 @@ contract AssetTokenization is AutomationCompatibleInterface {
 
     function getBuyers() public view returns (address[] memory) {
         return farmerToNftContract[msg.sender].getTokenOwners();
+    }
+
+    function getFarmers() public view returns (address[] memory) {
+        return farmers;
     }
 
     // for upkeep that chainlink automation function.

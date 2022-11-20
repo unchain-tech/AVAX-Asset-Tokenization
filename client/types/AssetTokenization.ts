@@ -56,26 +56,32 @@ export declare namespace AssetTokenization {
 
 export interface AssetTokenizationInterface extends utils.Interface {
   functions: {
+    "availableContract(address)": FunctionFragment;
     "buyNft(address)": FunctionFragment;
     "checkUpkeep(bytes)": FunctionFragment;
-    "farmers(uint256)": FunctionFragment;
     "generateNftContract(string,string,uint256,uint256,uint256)": FunctionFragment;
     "getBuyers()": FunctionFragment;
+    "getFarmers()": FunctionFragment;
     "getNftContractDetails(address)": FunctionFragment;
     "performUpkeep(bytes)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "availableContract"
       | "buyNft"
       | "checkUpkeep"
-      | "farmers"
       | "generateNftContract"
       | "getBuyers"
+      | "getFarmers"
       | "getNftContractDetails"
       | "performUpkeep"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "availableContract",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "buyNft",
     values: [PromiseOrValue<string>]
@@ -83,10 +89,6 @@ export interface AssetTokenizationInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "checkUpkeep",
     values: [PromiseOrValue<BytesLike>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "farmers",
-    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "generateNftContract",
@@ -100,6 +102,10 @@ export interface AssetTokenizationInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getBuyers", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "getFarmers",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getNftContractDetails",
     values: [PromiseOrValue<string>]
   ): string;
@@ -108,17 +114,21 @@ export interface AssetTokenizationInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "availableContract",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "buyNft", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "checkUpkeep",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "farmers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "generateNftContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getBuyers", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getFarmers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getNftContractDetails",
     data: BytesLike
@@ -158,6 +168,11 @@ export interface AssetTokenization extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    availableContract(
+      farmer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     buyNft(
       farmerAddress: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -167,11 +182,6 @@ export interface AssetTokenization extends BaseContract {
       arg0: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[boolean, string] & { upkeepNeeded: boolean }>;
-
-    farmers(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
 
     generateNftContract(
       _farmerName: PromiseOrValue<string>,
@@ -184,6 +194,8 @@ export interface AssetTokenization extends BaseContract {
 
     getBuyers(overrides?: CallOverrides): Promise<[string[]]>;
 
+    getFarmers(overrides?: CallOverrides): Promise<[string[]]>;
+
     getNftContractDetails(
       farmerAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -195,6 +207,11 @@ export interface AssetTokenization extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  availableContract(
+    farmer: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   buyNft(
     farmerAddress: PromiseOrValue<string>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -204,11 +221,6 @@ export interface AssetTokenization extends BaseContract {
     arg0: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<[boolean, string] & { upkeepNeeded: boolean }>;
-
-  farmers(
-    arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
 
   generateNftContract(
     _farmerName: PromiseOrValue<string>,
@@ -221,6 +233,8 @@ export interface AssetTokenization extends BaseContract {
 
   getBuyers(overrides?: CallOverrides): Promise<string[]>;
 
+  getFarmers(overrides?: CallOverrides): Promise<string[]>;
+
   getNftContractDetails(
     farmerAddress: PromiseOrValue<string>,
     overrides?: CallOverrides
@@ -232,6 +246,11 @@ export interface AssetTokenization extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    availableContract(
+      farmer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     buyNft(
       farmerAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -241,11 +260,6 @@ export interface AssetTokenization extends BaseContract {
       arg0: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[boolean, string] & { upkeepNeeded: boolean }>;
-
-    farmers(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
 
     generateNftContract(
       _farmerName: PromiseOrValue<string>,
@@ -257,6 +271,8 @@ export interface AssetTokenization extends BaseContract {
     ): Promise<void>;
 
     getBuyers(overrides?: CallOverrides): Promise<string[]>;
+
+    getFarmers(overrides?: CallOverrides): Promise<string[]>;
 
     getNftContractDetails(
       farmerAddress: PromiseOrValue<string>,
@@ -272,6 +288,11 @@ export interface AssetTokenization extends BaseContract {
   filters: {};
 
   estimateGas: {
+    availableContract(
+      farmer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     buyNft(
       farmerAddress: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -279,11 +300,6 @@ export interface AssetTokenization extends BaseContract {
 
     checkUpkeep(
       arg0: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    farmers(
-      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -298,6 +314,8 @@ export interface AssetTokenization extends BaseContract {
 
     getBuyers(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getFarmers(overrides?: CallOverrides): Promise<BigNumber>;
+
     getNftContractDetails(
       farmerAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -310,6 +328,11 @@ export interface AssetTokenization extends BaseContract {
   };
 
   populateTransaction: {
+    availableContract(
+      farmer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     buyNft(
       farmerAddress: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -317,11 +340,6 @@ export interface AssetTokenization extends BaseContract {
 
     checkUpkeep(
       arg0: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    farmers(
-      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -335,6 +353,8 @@ export interface AssetTokenization extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getBuyers(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getFarmers(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getNftContractDetails(
       farmerAddress: PromiseOrValue<string>,

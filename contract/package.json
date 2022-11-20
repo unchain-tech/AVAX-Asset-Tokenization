@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx hardhat test",
     "deploy": "npx hardhat run scripts/deploy.ts --network fuji",
-    "cp": "cp contract/typechain-types/contracts/AssetTokenization.ts client/types/ && cp contract/artifacts/contracts/AssetTokenization.sol/AssetTokenization.json client/artifacts/"
+    "cp": "cp typechain-types/contracts/AssetTokenization.ts ../client/types/ && cp artifacts/contracts/AssetTokenization.sol/AssetTokenization.json ../client/artifacts/"
   },
   "keywords": [],
   "author": "",
