@@ -14,7 +14,7 @@ export default function FarmerContainer() {
   };
 
   return (
-    <div className={styles.centerContent}>
+    <div>
       <div className={styles.selectTab}>
         <div
           className={
