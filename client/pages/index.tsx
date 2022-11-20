@@ -6,11 +6,11 @@ const Home: NextPage = () => {
   return (
     <DefaultLayout home>
       {/* <Container currentAccount={currentAccount} /> */}
-      <Link href="/Page1">
-        <h2>page1 &rarr;</h2>
+      <Link href="/FarmerPage">
+        <h2>FarmerPage &rarr;</h2>
       </Link>
-      <Link href="/Page2">
-        <h2>page2 &rarr;</h2>
+      <Link href="/BuyerPage">
+        <h2>BuyerPage &rarr;</h2>
       </Link>
     </DefaultLayout>
   );
