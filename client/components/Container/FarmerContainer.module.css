@@ -30,11 +30,11 @@
 }
 
 .tabStyle:hover {
-    background: #204158;
+    background: #20582e;
 }
 
 .activeTab {
-    background: #356c93;
+    background: #359346;
 }
 
 .tabBody {
