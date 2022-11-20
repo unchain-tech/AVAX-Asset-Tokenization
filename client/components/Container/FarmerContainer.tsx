@@ -14,34 +14,32 @@ export default function FarmerContainer() {
   };
 
   return (
-    <div className={styles.mainBody}>
-      <div className={styles.centerContent}>
-        <div className={styles.selectTab}>
-          <div
-            className={
-              styles.tabStyle +
-              " " +
-              (activeTab === Tokenize ? styles.activeTab : "")
-            }
-            onClick={() => changeTab(Tokenize)}
-          >
-            {Tokenize}
-          </div>
-          <div
-            className={
-              styles.tabStyle +
-              " " +
-              (activeTab === ViewBuyers ? styles.activeTab : "")
-            }
-            onClick={() => changeTab(ViewBuyers)}
-          >
-            {ViewBuyers}
-          </div>
+    <div className={styles.centerContent}>
+      <div className={styles.selectTab}>
+        <div
+          className={
+            styles.tabStyle +
+            " " +
+            (activeTab === Tokenize ? styles.activeTab : "")
+          }
+          onClick={() => changeTab(Tokenize)}
+        >
+          {Tokenize}
         </div>
-        <div className={styles.tabBody}>
-          {activeTab === Tokenize && <TokenizeForm />}
-          {activeTab === ViewBuyers && <ViewBuyersForm />}
+        <div
+          className={
+            styles.tabStyle +
+            " " +
+            (activeTab === ViewBuyers ? styles.activeTab : "")
+          }
+          onClick={() => changeTab(ViewBuyers)}
+        >
+          {ViewBuyers}
         </div>
+      </div>
+      <div className={styles.tabBody}>
+        {activeTab === Tokenize && <TokenizeForm />}
+        {activeTab === ViewBuyers && <ViewBuyersForm />}
       </div>
     </div>
   );

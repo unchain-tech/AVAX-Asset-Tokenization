@@ -18,7 +18,6 @@ export default function ViewBuyersForm() {
     try {
       const buyers = await assetTokenization.getBuyers();
       setBuyers(buyers);
-      alert("Success");
     } catch (error) {
       alert(error);
     }

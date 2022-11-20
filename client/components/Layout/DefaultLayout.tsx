@@ -15,7 +15,7 @@ export default function DefaultLayout({ children, home }: Props) {
     <div className={styles.pageBody}>
       <div className={styles.navBar}>
         <div className={styles.rightHeader}>
-          <div className={styles.appName}> Lending </div>
+          <div className={styles.appName}> Asset Tokenization </div>
         </div>
         {currentAccount == undefined ? (
           <div className={styles.connectBtn} onClick={connectWallet}>
