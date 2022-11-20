@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import styles from "./Form.module.css";
+import styles from "./TokenizeForm.module.css";
 import CurrentAccountContext from "../../context/CurrentAccountProvider";
 import { useContract } from "../../hooks/useContract";
 import { validAmount } from "../../utils/validAmount";
@@ -71,7 +71,7 @@ export default function TokenizeForm() {
   };
 
   return (
-    <div>
+    <div className={styles.centerContent}>
       <p>farmer name</p>
       <input
         // className={styles.textField}
