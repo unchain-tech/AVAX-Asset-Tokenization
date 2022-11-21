@@ -1,10 +1,10 @@
 import DefaultLayout from "../components/Layout/DefaultLayout";
-import BuyNftForm from "../components/Form/BuyNftForm";
+import ListNftForm from "../components/Form/ListNftForm";
 
 export default function BuyerPage() {
   return (
     <DefaultLayout>
-      <BuyNftForm />
+      <ListNftForm />
     </DefaultLayout>
   );
 }
