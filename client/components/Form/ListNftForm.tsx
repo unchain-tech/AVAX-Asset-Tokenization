@@ -3,7 +3,11 @@ import CurrentAccountContext from "../../context/CurrentAccountProvider";
 import { useContract } from "../../hooks/useContract";
 import styles from "./ListNftForm.module.css";
 import ActionButton from "../Button/ActionButton";
-import { ethers } from "ethers";
+import {
+  avaxToWei,
+  weiToAvax,
+  blockTimeStampToDate,
+} from "../../utils/formatter";
 
 type FarmNftDetailsType = {
   farmerAddress: string;
@@ -20,14 +24,19 @@ export default function ListNftForm() {
   const { assetTokenization } = useContract({ currentAccount });
   const [allNftDetails, setAllNftDetails] = useState<FarmNftDetailsType[]>([]);
 
-  const onClickBuyNft = async (farmerAddress: string) => {
+  const onClickBuyNft = async (farmerAddress: string, priceInAvax: string) => {
     if (!currentAccount) {
       alert("connect wallet");
       return;
     }
     if (!assetTokenization) return;
     try {
-      const txn = await assetTokenization.buyNft(farmerAddress);
+      const priceInWei = avaxToWei(priceInAvax);
+
+      const txn = await assetTokenization.buyNft(farmerAddress, {
+        value: priceInWei,
+      });
+
       await txn.wait();
       alert("Success");
     } catch (error) {
@@ -48,7 +57,8 @@ export default function ListNftForm() {
         <div className={styles.center}>
           <ActionButton
             title={"Buy NFT"}
-            onClick={() => onClickBuyNft(details.farmerAddress)}
+            onClick={() => onClickBuyNft(details.farmerAddress, details.price)}
+            disable={details.availableMint === "0"}
           />
         </div>
       </div>
@@ -77,23 +87,11 @@ export default function ListNftForm() {
           description: details.description,
           totalMint: details.totalMint.toString(),
           availableMint: details.availableMint.toString(),
-          price: ethers.utils.formatEther(details.price), // price in wei to ether
-          expirationDate: new Date(details.expirationDate.toNumber() * 1000), // new Date(time in mile seconds)
+          price: weiToAvax(details.price),
+          expirationDate: blockTimeStampToDate(details.expirationDate),
         } as FarmNftDetailsType);
       }
     }
-    //TODO これ消す
-    // for (let index = 0; index < 10; index++) {
-    //   allDetails.push({
-    //     farmerAddress: index.toString(),
-    //     farmerName: "name",
-    //     description: "description",
-    //     totalMint: "10",
-    //     availableMint: "10",
-    //     price: "10",
-    //     expirationDate: new Date("10"),
-    //   } as FarmNftDetailsType);
-    // }
     setAllNftDetails(allDetails);
   }, [currentAccount, assetTokenization]);
 

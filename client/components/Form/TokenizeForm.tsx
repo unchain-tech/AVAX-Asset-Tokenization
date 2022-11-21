@@ -3,8 +3,8 @@ import styles from "./TokenizeForm.module.css";
 import CurrentAccountContext from "../../context/CurrentAccountProvider";
 import { useContract } from "../../hooks/useContract";
 import { validAmount } from "../../utils/validAmount";
-import { ethers } from "ethers";
 import ActionButton from "../Button/ActionButton";
+import { avaxToWei } from "../../utils/formatter";
 
 export default function TokenizeForm() {
   const [currentAccount] = useContext(CurrentAccountContext);
@@ -54,7 +54,7 @@ export default function TokenizeForm() {
     if (!assetTokenization) return;
     if (!validInput()) return;
     try {
-      const priceInWei = ethers.utils.parseEther(price);
+      const priceInWei = avaxToWei(price);
       const dateInSeconds = dateToSeconds(expirationDate);
 
       const txn = await assetTokenization.generateNftContract(
@@ -77,6 +77,7 @@ export default function TokenizeForm() {
     }
   };
 
+  //TODO priceに0.01を入れると警告が出る件について
   return (
     <div className={styles.container}>
       <form>
@@ -103,6 +104,7 @@ export default function TokenizeForm() {
             className={styles.line}
             type="number"
             value={totalMint}
+            min={0}
             onChange={(e) => setTotalMint(e.target.value)}
           />
         </div>
@@ -113,6 +115,7 @@ export default function TokenizeForm() {
             className={styles.line}
             type="number"
             value={price}
+            min={0}
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
@@ -130,14 +133,10 @@ export default function TokenizeForm() {
           <ActionButton
             title={"Generate NFT"}
             onClick={() => onClickGenerateNFT()}
+            disable={false}
           />
         </div>
       </form>
-      <p>farmerName: {farmerName}</p>
-      <p>description: {description}</p>
-      <p>totalMint: {totalMint}</p>
-      <p>price: {price}</p>
-      <p>expirationDate: {expirationDate}</p>
     </div>
   );
 }
