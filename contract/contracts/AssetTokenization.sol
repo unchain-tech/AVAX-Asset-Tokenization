@@ -89,6 +89,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
     }
 
     function getBuyers() public view returns (address[] memory) {
+        require(availableContract(msg.sender), "Not yet deployed");
         return farmerToNftContract[msg.sender].getTokenOwners();
     }
 

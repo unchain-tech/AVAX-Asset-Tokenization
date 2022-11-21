@@ -8,13 +8,22 @@ export default function ViewBuyersForm() {
 
   const [buyers, setBuyers] = useState<string[]>([]);
 
+  const BuyersCard = ({ buyer }: { buyer: string }) => {
+    return (
+      <div>
+        <p>buyer: {buyer}</p>
+      </div>
+    );
+  };
+
   const getBuyers = useCallback(async () => {
     if (!currentAccount) {
       alert("connect wallet");
       return;
     }
     if (!assetTokenization) return;
-    setBuyers([]);
+    const available = await assetTokenization.availableContract(currentAccount);
+    if (!available) return;
     try {
       const buyers = await assetTokenization.getBuyers();
       setBuyers(buyers);
@@ -29,11 +38,10 @@ export default function ViewBuyersForm() {
 
   return (
     <div>
-      <p>start</p>
       {buyers.map((buyer, index) => {
         return (
           <div key={index}>
-            <p>buyer: {buyer}</p>
+            <BuyersCard buyer={buyer} />
           </div>
         );
       })}
