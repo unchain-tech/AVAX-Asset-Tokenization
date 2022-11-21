@@ -4,6 +4,7 @@ import CurrentAccountContext from "../../context/CurrentAccountProvider";
 import { useContract } from "../../hooks/useContract";
 import { validAmount } from "../../utils/validAmount";
 import { ethers } from "ethers";
+import ActionButton from "../Button/ActionButton";
 
 export default function TokenizeForm() {
   const [currentAccount] = useContext(CurrentAccountContext);
@@ -125,13 +126,11 @@ export default function TokenizeForm() {
             onChange={(e) => setExpirationDate(e.target.value)}
           />
         </div>
-        <div className={styles.submit_field}>
-          <button
-            className={styles.submit_button}
+        <div className={styles.field_button}>
+          <ActionButton
+            title={"Generate NFT"}
             onClick={() => onClickGenerateNFT()}
-          >
-            generate NFT
-          </button>
+          />
         </div>
       </form>
       <p>farmerName: {farmerName}</p>

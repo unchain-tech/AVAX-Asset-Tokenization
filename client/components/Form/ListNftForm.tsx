@@ -2,6 +2,8 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import CurrentAccountContext from "../../context/CurrentAccountProvider";
 import { useContract } from "../../hooks/useContract";
 import styles from "./ListNftForm.module.css";
+import ActionButton from "../Button/ActionButton";
+import { ethers } from "ethers";
 
 type FarmNftDetailsType = {
   farmerAddress: string;
@@ -18,6 +20,21 @@ export default function ListNftForm() {
   const { assetTokenization } = useContract({ currentAccount });
   const [allNftDetails, setAllNftDetails] = useState<FarmNftDetailsType[]>([]);
 
+  const onClickBuyNft = async (farmerAddress: string) => {
+    if (!currentAccount) {
+      alert("connect wallet");
+      return;
+    }
+    if (!assetTokenization) return;
+    try {
+      const txn = await assetTokenization.buyNft(farmerAddress);
+      await txn.wait();
+      alert("Success");
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   const NftDetailsCard = ({ details }: { details: FarmNftDetailsType }) => {
     return (
       <div className={styles.card}>
@@ -28,6 +45,12 @@ export default function ListNftForm() {
         <p>availableMint: {details.availableMint}</p>
         <p>price: {details.price}</p>
         <p>expiration date: {details.expirationDate.toString()}</p>
+        <div className={styles.center}>
+          <ActionButton
+            title={"Buy NFT"}
+            onClick={() => onClickBuyNft(details.farmerAddress)}
+          />
+        </div>
       </div>
     );
   };
@@ -40,36 +63,37 @@ export default function ListNftForm() {
     if (!assetTokenization) return;
     const farmers = await assetTokenization.getFarmers();
     let allDetails: FarmNftDetailsType[] = [];
-    // for (let index = 0; index < farmers.length; index++) {
-    //   const available = await assetTokenization.availableContract(
-    //     farmers[index]
-    //   );
-    //   if (available) {
-    //     const details = await assetTokenization.getNftContractDetails(
-    //       farmers[index]
-    //     );
-    //     allDetails.push({
-    //       farmerAddress: details.farmerAddress,
-    //       farmerName: details.farmerName,
-    //       description: details.description,
-    //       totalMint: details.totalMint.toString(),
-    //       availableMint: details.availableMint.toString(),
-    //       price: ethers.utils.formatEther(details.price), // price in wei to ether
-    //       expirationDate: new Date(details.expirationDate.toNumber() * 1000), // new Date(time in mile seconds)
-    //     } as FarmNftDetailsType);
-    //   }
-    // }
-    for (let index = 0; index < 10; index++) {
-      allDetails.push({
-        farmerAddress: index.toString(),
-        farmerName: "name",
-        description: "description",
-        totalMint: "10",
-        availableMint: "10",
-        price: "10",
-        expirationDate: new Date("10"),
-      } as FarmNftDetailsType);
+    for (let index = 0; index < farmers.length; index++) {
+      const available = await assetTokenization.availableContract(
+        farmers[index]
+      );
+      if (available) {
+        const details = await assetTokenization.getNftContractDetails(
+          farmers[index]
+        );
+        allDetails.push({
+          farmerAddress: details.farmerAddress,
+          farmerName: details.farmerName,
+          description: details.description,
+          totalMint: details.totalMint.toString(),
+          availableMint: details.availableMint.toString(),
+          price: ethers.utils.formatEther(details.price), // price in wei to ether
+          expirationDate: new Date(details.expirationDate.toNumber() * 1000), // new Date(time in mile seconds)
+        } as FarmNftDetailsType);
+      }
     }
+    //TODO これ消す
+    // for (let index = 0; index < 10; index++) {
+    //   allDetails.push({
+    //     farmerAddress: index.toString(),
+    //     farmerName: "name",
+    //     description: "description",
+    //     totalMint: "10",
+    //     availableMint: "10",
+    //     price: "10",
+    //     expirationDate: new Date("10"),
+    //   } as FarmNftDetailsType);
+    // }
     setAllNftDetails(allDetails);
   }, [currentAccount, assetTokenization]);
 
@@ -79,9 +103,10 @@ export default function ListNftForm() {
 
   return (
     <div>
+      <p>Available NFT</p>
       {allNftDetails.map((details, index) => {
         return (
-          <div key={index} className={styles.container}>
+          <div key={index} className={styles.center}>
             <NftDetailsCard details={details} />
           </div>
         );

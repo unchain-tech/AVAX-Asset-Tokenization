@@ -5,7 +5,6 @@
 .selectTab {
     margin: 0px auto;
     width: 800px;
-    height: 80px;
     display: flex;
     margin: 0px 1;
     margin-top: 10px;
@@ -36,7 +35,6 @@
 .tabBody {
     margin: 0px auto;
     width: 800px;
-    padding-top: 10px;
     background-color: #0e0e10;
     border-radius: 0px 0px 19px 19px;
     border-top: 0px;
