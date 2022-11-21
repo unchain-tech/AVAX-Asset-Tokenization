@@ -77,7 +77,6 @@ export default function TokenizeForm() {
     }
   };
 
-  //TODO priceに0.01を入れると警告が出る件について
   return (
     <div className={styles.container}>
       <form>
@@ -104,7 +103,6 @@ export default function TokenizeForm() {
             className={styles.line}
             type="number"
             value={totalMint}
-            min={0}
             onChange={(e) => setTotalMint(e.target.value)}
           />
         </div>
@@ -115,7 +113,6 @@ export default function TokenizeForm() {
             className={styles.line}
             type="number"
             value={price}
-            min={0}
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
