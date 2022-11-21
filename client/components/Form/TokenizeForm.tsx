@@ -32,11 +32,17 @@ export default function TokenizeForm() {
       alert("invalid price");
       return false;
     }
-    if (!validAmount(expirationDate)) {
+    if (expirationDate === "") {
       alert("invalid expiration date");
       return false;
     }
     return true;
+  };
+
+  const dateToSeconds = (date: string) => {
+    const dateInDate = new Date(date);
+    const dateInSeconds = Math.floor(dateInDate.getTime() / 1000);
+    return dateInSeconds.toString();
   };
 
   const onClickGenerateNFT = async () => {
@@ -48,13 +54,14 @@ export default function TokenizeForm() {
     if (!validInput()) return;
     try {
       const priceInWei = ethers.utils.parseEther(price);
+      const dateInSeconds = dateToSeconds(expirationDate);
 
       const txn = await assetTokenization.generateNftContract(
         farmerName,
         description,
         totalMint,
         priceInWei,
-        expirationDate
+        dateInSeconds
       );
       await txn.wait();
 
@@ -69,14 +76,8 @@ export default function TokenizeForm() {
     }
   };
 
-  const onChangeExpirationDate = (date: string) => {
-    const dateInDate = new Date(date);
-    const dateInSeconds = Math.floor(dateInDate.getTime() / 1000);
-    setExpirationDate(dateInSeconds.toString());
-  };
-
   return (
-    <div className={styles.centerContent}>
+    <div className={styles.container}>
       <form>
         <div className={styles.field}>
           <p>Farmer name:</p>
@@ -121,7 +122,7 @@ export default function TokenizeForm() {
             className={styles.date}
             type="date"
             value={expirationDate}
-            onChange={(e) => onChangeExpirationDate(e.target.value)}
+            onChange={(e) => setExpirationDate(e.target.value)}
           />
         </div>
         <div className={styles.submit_field}>

@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import CurrentAccountContext from "../../context/CurrentAccountProvider";
 import { useContract } from "../../hooks/useContract";
+import styles from "./ViewBuyersForm.module.css";
 
 export default function ViewBuyersForm() {
   const [currentAccount] = useContext(CurrentAccountContext);
@@ -11,7 +12,7 @@ export default function ViewBuyersForm() {
   const BuyersCard = ({ buyer }: { buyer: string }) => {
     return (
       <div>
-        <p>buyer: {buyer}</p>
+        <p>{buyer}</p>
       </div>
     );
   };
@@ -37,7 +38,8 @@ export default function ViewBuyersForm() {
   }, [getBuyers]);
 
   return (
-    <div>
+    <div className={styles.container}>
+      <p>Addresses of people who bought your NFT: </p>
       {buyers.map((buyer, index) => {
         return (
           <div key={index}>
