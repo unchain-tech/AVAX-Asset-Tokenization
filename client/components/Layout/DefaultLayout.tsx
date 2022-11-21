@@ -12,7 +12,7 @@ export default function DefaultLayout({ children, home }: Props) {
   const [currentAccount, connectWallet] = useContext(CurrentAccountContext);
 
   return (
-    <div className={styles.pageBody}>
+    <div>
       <div className={styles.navBar}>
         <div className={styles.rightHeader}>
           <div className={styles.appName}> Asset Tokenization </div>
@@ -31,11 +31,9 @@ export default function DefaultLayout({ children, home }: Props) {
       </div>
       <div>{children}</div>
       {!home && (
-        <div className={styles.backToHome}>
-          <Link href="/">
-            <div>← Back to home</div>
-          </Link>
-        </div>
+        <Link href="/">
+          <div className={styles.backToHome}>Back to home</div>
+        </Link>
       )}
     </div>
   );

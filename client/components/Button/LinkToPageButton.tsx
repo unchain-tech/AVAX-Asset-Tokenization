@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { ElementType, ReactNode } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import styles from "./Button.module.css";
+import styles from "./LinkToPageButton.module.css";
 
 type Props = {
   linkTo: string;
@@ -9,7 +8,7 @@ type Props = {
   description: string;
 };
 
-export default function ForFarmerButton({
+export default function LinkToPageButton({
   linkTo,
   icon_left,
   description,
