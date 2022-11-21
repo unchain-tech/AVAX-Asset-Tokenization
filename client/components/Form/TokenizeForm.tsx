@@ -15,32 +15,37 @@ export default function TokenizeForm() {
   const [price, setPrice] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
 
+  const validInput = () => {
+    if (farmerName === "") {
+      alert("enter farmer name");
+      return false;
+    }
+    if (description === "") {
+      alert("enter description name");
+      return false;
+    }
+    if (!validAmount(totalMint)) {
+      alert("invalid total number of mint");
+      return false;
+    }
+    if (!validAmount(price)) {
+      alert("invalid price");
+      return false;
+    }
+    if (!validAmount(expirationDate)) {
+      alert("invalid expiration date");
+      return false;
+    }
+    return true;
+  };
+
   const onClickGenerateNFT = async () => {
     if (!currentAccount) {
       alert("connect wallet");
       return;
     }
     if (!assetTokenization) return;
-    if (farmerName === "") {
-      alert("enter farmer name");
-      return;
-    }
-    if (description === "") {
-      alert("enter description name");
-      return;
-    }
-    if (!validAmount(totalMint)) {
-      alert("invalid total number of mint");
-      return;
-    }
-    if (!validAmount(price)) {
-      alert("invalid price");
-      return;
-    }
-    if (!validAmount(expirationDate)) {
-      alert("invalid expiration date");
-      return;
-    }
+    if (!validInput()) return;
     try {
       const priceInWei = ethers.utils.parseEther(price);
 
@@ -72,48 +77,67 @@ export default function TokenizeForm() {
 
   return (
     <div className={styles.centerContent}>
-      <p>farmer name</p>
-      <input
-        // className={styles.textField}
-        onChange={(e) => setFarmerName(e.target.value)}
-      />
+      <form>
+        <div className={styles.field}>
+          <p>Farmer name:</p>
+          <input
+            className={styles.line}
+            type="text"
+            onChange={(e) => setFarmerName(e.target.value)}
+          />
+        </div>
 
-      <p>description</p>
-      <textarea
-        // className={styles.textField}
-        onChange={(e) => setDescription(e.target.value)}
-      />
+        <div className={styles.field}>
+          <p>description:</p>
+          <textarea
+            className={styles.text_area}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
 
-      <p>total number of mint</p>
-      <input
-        // className={styles.textField}
-        type="number"
-        value={totalMint}
-        onChange={(e) => setTotalMint(e.target.value)}
-      />
+        <div className={styles.field}>
+          <p>total number of mint:</p>
+          <input
+            className={styles.line}
+            type="number"
+            value={totalMint}
+            onChange={(e) => setTotalMint(e.target.value)}
+          />
+        </div>
 
-      <p>price</p>
-      <input
-        // className={styles.textField}
-        type="number"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
+        <div className={styles.field}>
+          <p>price:</p>
+          <input
+            className={styles.line}
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+        </div>
 
-      <p>expiration date</p>
-      <input
-        // className={styles.textField}
-        type="date"
-        value={expirationDate}
-        onChange={(e) => onChangeExpirationDate(e.target.value)}
-      />
-
+        <div className={styles.field}>
+          <p>expiration date:</p>
+          <input
+            className={styles.date}
+            type="date"
+            value={expirationDate}
+            onChange={(e) => onChangeExpirationDate(e.target.value)}
+          />
+        </div>
+        <div className={styles.submit_field}>
+          <button
+            className={styles.submit_button}
+            onClick={() => onClickGenerateNFT()}
+          >
+            generate NFT
+          </button>
+        </div>
+      </form>
       <p>farmerName: {farmerName}</p>
       <p>description: {description}</p>
       <p>totalMint: {totalMint}</p>
       <p>price: {price}</p>
       <p>expirationDate: {expirationDate}</p>
-      <div onClick={() => onClickGenerateNFT()}>generate NFT</div>
     </div>
   );
 }
