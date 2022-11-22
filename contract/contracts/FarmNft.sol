@@ -41,14 +41,14 @@ contract FarmNft is ERC721 {
         require(isExpired() == false, "Already expired");
         require(msg.value == price);
 
-        (bool success, ) = (farmerAddress).call{value: msg.value}("");
-        require(success, "Failed to withdraw AVAX");
-
         uint256 newItemId = _tokenIds.current();
         _safeMint(to, newItemId);
         console.log("An NFT w/ ID %s has been minted to %s", newItemId, to);
         _tokenIds.increment();
         availableMint--;
+
+        (bool success, ) = (farmerAddress).call{value: msg.value}("");
+        require(success, "Failed to withdraw AVAX");
     }
 
     function tokenURI(uint256 _tokenId)
