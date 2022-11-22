@@ -39,15 +39,17 @@ contract AssetTokenization is AutomationCompatibleInterface {
         uint256 _price,
         uint256 _expirationDate
     ) public {
+        address farmerAddress = msg.sender;
+
         require(
-            availableContract(msg.sender) == false,
+            availableContract(farmerAddress) == false,
             "Your token is already deployed"
         );
 
-        addFarmer(msg.sender);
+        addFarmer(farmerAddress);
 
         FarmNft newNft = new FarmNft(
-            msg.sender,
+            farmerAddress,
             _farmerName,
             _description,
             _totalMint,
@@ -55,7 +57,7 @@ contract AssetTokenization is AutomationCompatibleInterface {
             _expirationDate
         );
 
-        farmerToNftContract[msg.sender] = newNft;
+        farmerToNftContract[farmerAddress] = newNft;
     }
 
     function getNftContractDetails(address farmerAddress)
@@ -81,14 +83,19 @@ contract AssetTokenization is AutomationCompatibleInterface {
 
     function buyNft(address farmerAddress) public payable {
         require(availableContract(farmerAddress), "Not yet deployed");
+
+        address buyerAddress = msg.sender;
         farmerToNftContract[farmerAddress].mintNFT{value: msg.value}(
-            msg.sender
+            buyerAddress
         );
     }
 
     function getBuyers() public view returns (address[] memory) {
-        require(availableContract(msg.sender), "Not yet deployed");
-        return farmerToNftContract[msg.sender].getTokenOwners();
+        address farmerAddress = msg.sender;
+
+        require(availableContract(farmerAddress), "Not yet deployed");
+
+        return farmerToNftContract[farmerAddress].getTokenOwners();
     }
 
     function getFarmers() public view returns (address[] memory) {
