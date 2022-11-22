@@ -67,8 +67,8 @@ contract FarmNft is ERC721 {
                         Strings.toString(_tokenId),
                         '", "description": "',
                         description,
-                        '", "image": "ipfs://',
-                        "bafybeica5xvnjfxvnrj7rrhle2vkfs4ptnnc2gfegxptc2lshvaw3yazcm",
+                        '", "image": "',
+                        "https://i.imgur.com/GZCdtXu.jpg",
                         '"}'
                     )
                 )

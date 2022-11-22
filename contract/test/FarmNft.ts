@@ -31,20 +31,19 @@ describe("farmNft", function () {
       deployAccount: accounts[0],
       userAccounts: accounts.slice(1, accounts.length),
       farmNft,
-      totalMint,
     };
   }
 
   describe("mint", function () {
-    it("basic", async function () {
+    it("NFT should be minted", async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      const account = userAccounts[0];
+      const buyer = userAccounts[0];
       const price = await farmNft.price();
 
-      await farmNft.mintNFT(account.address, { value: price } as Overrides);
+      await farmNft.mintNFT(buyer.address, { value: price } as Overrides);
 
-      expect(await farmNft.ownerOf(0)).to.equal(account.address);
+      expect(await farmNft.ownerOf(0)).to.equal(buyer.address);
     });
 
     it("balance should be change", async function () {
@@ -56,6 +55,9 @@ describe("farmNft", function () {
       const buyer = userAccounts[0];
       const price = await farmNft.price();
 
+      // buyer自身がmintNFTを呼び出す場合は contract.connect(buyer).mintNFT() のようにして記述します。
+      // ここではbuyerがAVAX(テスト上ではイーサリアムネットワークなのでEther)を支払い, farmerにAVAXが送信されるという構図を再現したいのでbuyerからmintNFTを呼び出しました。
+      // connect(buyer)を使用しない場合はdeployAccountによってmintNFTが呼び出されます。
       await expect(
         farmNft
           .connect(buyer)
@@ -64,32 +66,33 @@ describe("farmNft", function () {
     });
 
     it("revert when not enough nft to mint", async function () {
-      const { userAccounts, farmNft, totalMint } = await loadFixture(
-        deployContract
-      );
+      const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      const account = userAccounts[0];
+      const buyer = userAccounts[0];
       const price = await farmNft.price();
+      const totalMint = await farmNft.totalMint();
 
+      // mintできる上限までNFTをmintします。
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
-        await farmNft.mintNFT(account.address, { value: price } as Overrides);
+        await farmNft.mintNFT(buyer.address, { value: price } as Overrides);
       }
 
+      // 上限までmintしたので, 次のmintは失敗するはずです。
       await expect(
-        farmNft.mintNFT(account.address, { value: price } as Overrides)
+        farmNft.mintNFT(buyer.address, { value: price } as Overrides)
       ).to.be.reverted;
     });
 
     it("revert when not enough currency to mint", async function () {
-      const { userAccounts, farmNft, totalMint } = await loadFixture(
-        deployContract
-      );
+      const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      const account = userAccounts[0];
+      const buyer = userAccounts[0];
       const price = await farmNft.price();
 
       await expect(
-        farmNft.mintNFT(account.address, { value: price.sub(1) } as Overrides)
+        farmNft
+          .connect(buyer)
+          .mintNFT(buyer.address, { value: price.sub(1) } as Overrides)
       ).to.be.reverted;
     });
   });
@@ -98,10 +101,10 @@ describe("farmNft", function () {
     it("check URI", async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      const account = userAccounts[0];
+      const buyer = userAccounts[0];
       const price = await farmNft.price();
 
-      await farmNft.mintNFT(account.address, {
+      await farmNft.mintNFT(buyer.address, {
         value: price,
       } as Overrides);
 
@@ -110,21 +113,26 @@ describe("farmNft", function () {
   });
 
   describe("burnNFT", function () {
-    it("basic", async function () {
+    it("token should be burned", async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
-      const account = userAccounts[0];
+      const buyer = userAccounts[0];
       const price = await farmNft.price();
+      const expirationDate = await farmNft.expirationDate();
 
-      await farmNft.mintNFT(account.address, { value: price } as Overrides);
+      await farmNft.mintNFT(buyer.address, { value: price } as Overrides);
 
-      expect(await farmNft.ownerOf(0)).to.equal(account.address);
+      // mint後なので, id=0のNFTの所有者はbuyerのはずです。
+      expect(await farmNft.ownerOf(0)).to.equal(buyer.address);
 
-      await time.increase(oneWeekInSecond * 2);
+      // hardhatのヘルパー機能timeを使用してローカルのイーサリアムネットに, 指定したtimestampのブロックを追加します。
+      // => 時間を進めてコントラクトの有効期限が切れるようにします。
+      await time.increaseTo(expirationDate.add(1));
 
       await farmNft.burnNFT();
 
-      expect(await farmNft.balanceOf(account.address)).to.equal(0);
+      // burn後なので, id=0のNFTの所有者は0(バーン時にNFTはアドレス0x0に送信されます)のはずです。
+      expect(await farmNft.balanceOf(buyer.address)).to.equal(0);
     });
 
     it("revert when call burnNFT before expiration", async function () {
@@ -136,11 +144,10 @@ describe("farmNft", function () {
 
   describe("allOwners", function () {
     it("basic", async function () {
-      const { userAccounts, farmNft, totalMint } = await loadFixture(
-        deployContract
-      );
+      const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const price = await farmNft.price();
+      const totalMint = await farmNft.totalMint();
 
       for (let cnt = 0; cnt < totalMint.toNumber(); cnt++) {
         await farmNft.mintNFT(userAccounts[cnt].address, {
