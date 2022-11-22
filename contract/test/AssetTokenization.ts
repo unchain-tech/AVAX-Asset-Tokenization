@@ -35,11 +35,11 @@ describe("AssetTokenization", function () {
         .div(1000) // in second
         .add(oneWeekInSecond); // one week later
 
-      const account1 = userAccounts[0];
-      const account2 = userAccounts[1];
+      const farmer1 = userAccounts[0];
+      const farmer2 = userAccounts[1];
 
       await assetTokenization
-        .connect(account1)
+        .connect(farmer1)
         .generateNftContract(
           farmerName,
           description,
@@ -49,7 +49,7 @@ describe("AssetTokenization", function () {
         );
 
       await assetTokenization
-        .connect(account2)
+        .connect(farmer2)
         .generateNftContract(
           farmerName,
           description,
@@ -59,9 +59,9 @@ describe("AssetTokenization", function () {
         );
 
       const details1 = await assetTokenization.getNftContractDetails(
-        account1.address
+        farmer1.address
       );
-      expect(details1.farmerAddress).to.equal(account1.address);
+      expect(details1.farmerAddress).to.equal(farmer1.address);
       expect(details1.farmerName).to.equal(farmerName);
       expect(details1.description).to.equal(description);
       expect(details1.totalMint).to.equal(totalMint);
@@ -70,9 +70,9 @@ describe("AssetTokenization", function () {
       expect(details1.expirationDate).to.equal(expirationDate);
 
       const details2 = await assetTokenization.getNftContractDetails(
-        account2.address
+        farmer2.address
       );
-      expect(details2.farmerAddress).to.equal(account2.address);
+      expect(details2.farmerAddress).to.equal(farmer2.address);
       expect(details2.farmerName).to.equal(farmerName);
       expect(details2.description).to.equal(description);
       expect(details2.totalMint).to.equal(totalMint);
@@ -96,11 +96,11 @@ describe("AssetTokenization", function () {
         .div(1000) // in second
         .add(oneWeekInSecond); // one week later
 
-      const account1 = userAccounts[0];
-      const account2 = userAccounts[1];
+      const farmer = userAccounts[0];
+      const buyer = userAccounts[1];
 
       await assetTokenization
-        .connect(account1)
+        .connect(farmer)
         .generateNftContract(
           farmerName,
           description,
@@ -111,9 +111,9 @@ describe("AssetTokenization", function () {
 
       await expect(
         assetTokenization
-          .connect(account2)
-          .buyNft(account1.address, { value: price } as Overrides)
-      ).to.changeEtherBalances([account1, account2], [price, -price]);
+          .connect(buyer)
+          .buyNft(farmer.address, { value: price } as Overrides)
+      ).to.changeEtherBalances([farmer, buyer], [price, -price]);
     });
   });
 
@@ -125,21 +125,19 @@ describe("AssetTokenization", function () {
 
       // 定数用意
       const farmerName = "farmer";
-      const name = "nft";
-      const symbol = "symbol";
       const description = "description";
       const totalMint = BigNumber.from(5);
       const price = BigNumber.from(100);
 
       /* 期限に余裕があるnftコントラクトの用意 */
-      const account1 = userAccounts[0];
+      const farmer1 = userAccounts[0];
       const expirationDateAfterNow = BigNumber.from(Date.now())
         .div(1000) // in second
         .add(oneWeekInSecond); // one week later
 
       // デプロイ
       await assetTokenization
-        .connect(account1)
+        .connect(farmer1)
         .generateNftContract(
           farmerName,
           description,
@@ -154,14 +152,14 @@ describe("AssetTokenization", function () {
       expect(return1).to.equal(false);
 
       /* 期限切れのnftコントラクトを用意 */
-      const account2 = userAccounts[1];
+      const farmer2 = userAccounts[1];
       const expirationDateBeforeNow = BigNumber.from(Date.now())
         .div(1000) // in second
         .sub(1); // back to before now
 
       // デプロイ
       await assetTokenization
-        .connect(account2)
+        .connect(farmer2)
         .generateNftContract(
           farmerName,
           description,
@@ -178,7 +176,7 @@ describe("AssetTokenization", function () {
       await assetTokenization.performUpkeep("0x00");
 
       // 期限切れのnftコントラクトの情報は取得できない
-      await expect(assetTokenization.getNftContractDetails(account2.address)).to
+      await expect(assetTokenization.getNftContractDetails(farmer2.address)).to
         .be.reverted;
     });
   });
