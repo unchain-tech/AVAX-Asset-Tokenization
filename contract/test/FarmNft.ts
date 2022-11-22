@@ -142,8 +142,8 @@ describe("farmNft", function () {
     });
   });
 
-  describe("allOwners", function () {
-    it("basic", async function () {
+  describe("getTokenOwners", function () {
+    it("should return valid addresses", async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const price = await farmNft.price();
