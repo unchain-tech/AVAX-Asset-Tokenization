@@ -10,8 +10,6 @@ describe("farmNft", function () {
     const accounts = await ethers.getSigners();
 
     const farmerName = "farmer";
-    const name = "nft";
-    const symbol = "symbol";
     const description = "description";
     const totalMint = BigNumber.from(5);
     const price = BigNumber.from(100);

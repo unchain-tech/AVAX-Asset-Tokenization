@@ -9,9 +9,6 @@ export default function FarmerContainer() {
   const ViewBuyers = "ViewBuyers";
 
   const [activeTab, setActiveTab] = useState(Tokenize);
-  const changeTab = (tab: string) => {
-    setActiveTab(tab);
-  };
 
   return (
     <div className={styles.container}>
@@ -22,7 +19,7 @@ export default function FarmerContainer() {
             " " +
             (activeTab === Tokenize ? styles.activeTab : "")
           }
-          onClick={() => changeTab(Tokenize)}
+          onClick={() => setActiveTab(Tokenize)}
         >
           {Tokenize}
         </div>
@@ -32,7 +29,7 @@ export default function FarmerContainer() {
             " " +
             (activeTab === ViewBuyers ? styles.activeTab : "")
           }
-          onClick={() => changeTab(ViewBuyers)}
+          onClick={() => setActiveTab(ViewBuyers)}
         >
           {ViewBuyers}
         </div>

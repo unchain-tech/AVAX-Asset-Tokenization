@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { BigNumber, Overrides } from "ethers";
 import { expect } from "chai";
-import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 describe("AssetTokenization", function () {
   const oneWeekInSecond = 60 * 60 * 24 * 7;
@@ -28,8 +28,6 @@ describe("AssetTokenization", function () {
       );
 
       const farmerName = "farmer";
-      const name = "nft";
-      const symbol = "symbol";
       const description = "description";
       const totalMint = BigNumber.from(5);
       const price = BigNumber.from(100);
@@ -91,8 +89,6 @@ describe("AssetTokenization", function () {
       );
 
       const farmerName = "farmer";
-      const name = "nft";
-      const symbol = "symbol";
       const description = "description";
       const totalMint = BigNumber.from(5);
       const price = BigNumber.from(100);

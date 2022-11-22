@@ -126,6 +126,7 @@ export default function TokenizeForm() {
             onChange={(e) => setExpirationDate(e.target.value)}
           />
         </div>
+
         <div className={styles.field_button}>
           <ActionButton
             title={"Generate NFT"}

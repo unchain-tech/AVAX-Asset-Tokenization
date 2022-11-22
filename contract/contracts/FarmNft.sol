@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-
-import "hardhat/console.sol";
 
 contract FarmNft is ERC721 {
     address public farmerAddress;
@@ -69,7 +68,7 @@ contract FarmNft is ERC721 {
                         '", "description": "',
                         description,
                         '", "image": "ipfs://',
-                        "bafybeica5xvnjfxvnrj7rrhle2vkfs4ptnnc2gfegxptc2lshvaw3yazcm", //TODO 画像が表示されない
+                        "bafybeica5xvnjfxvnrj7rrhle2vkfs4ptnnc2gfegxptc2lshvaw3yazcm",
                         '"}'
                     )
                 )

@@ -3,8 +3,6 @@ pragma solidity ^0.8.17;
 
 import "./FarmNft.sol";
 import "hardhat/console.sol";
-
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
 
 contract AssetTokenization is AutomationCompatibleInterface {
@@ -97,9 +95,9 @@ contract AssetTokenization is AutomationCompatibleInterface {
         return farmers;
     }
 
-    // for upkeep that chainlink automation function.
-    // if checkUpkeep() returns true, chainlink automatically runs performUpkeep() that follows below.
-    // check whether there are expired contracts.
+    // For upkeep that chainlink automation function.
+    // Check whether there are expired contracts.
+    // If checkUpkeep() returns true, chainlink automatically runs performUpkeep() that follows below.
     function checkUpkeep(
         bytes calldata /* optional data. don't use in this code */
     )
@@ -122,8 +120,8 @@ contract AssetTokenization is AutomationCompatibleInterface {
         return (false, "");
     }
 
-    // for chainlink
-    // burn expired NFT and delete NFT Contract.
+    // For chainlink.
+    // Burn expired NFT and delete NFT Contract.
     function performUpkeep(
         bytes calldata /* optional data. don't use in this code */
     ) external override {
