@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -43,7 +42,6 @@ contract FarmNft is ERC721 {
 
         uint256 newItemId = _tokenIds.current();
         _safeMint(to, newItemId);
-        console.log("An NFT w/ ID %s has been minted to %s", newItemId, to);
         _tokenIds.increment();
         availableMint--;
 
