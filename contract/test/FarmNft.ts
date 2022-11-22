@@ -47,6 +47,22 @@ describe("farmNft", function () {
       expect(await farmNft.ownerOf(0)).to.equal(account.address);
     });
 
+    it("balance should be change", async function () {
+      const { deployAccount, userAccounts, farmNft } = await loadFixture(
+        deployContract
+      );
+
+      const farmer = deployAccount;
+      const buyer = userAccounts[0];
+      const price = await farmNft.price();
+
+      await expect(
+        farmNft
+          .connect(buyer)
+          .mintNFT(buyer.address, { value: price } as Overrides)
+      ).to.changeEtherBalances([farmer, buyer], [price, -price]);
+    });
+
     it("revert when not enough nft to mint", async function () {
       const { userAccounts, farmNft, totalMint } = await loadFixture(
         deployContract
@@ -79,7 +95,7 @@ describe("farmNft", function () {
   });
 
   describe("tokenURI", function () {
-    it("basic", async function () {
+    it("check URI", async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const account = userAccounts[0];
