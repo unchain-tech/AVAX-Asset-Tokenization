@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 import AssetTokenizationArtifact from "../artifacts/AssetTokenization.json";
-import { AssetTokenization as AssetTokenizationType } from "../types/AssetTokenization";
+import { AssetTokenization as AssetTokenizationType } from "../types";
 import { getEthereum } from "../utils/ethereum";
 
 export const AssetTokenizationAddress =
