@@ -101,7 +101,7 @@ export default function ListNftForm() {
 
   return (
     <div>
-      <p>Available NFT</p>
+      <p className={styles.center}>Available NFT</p>
       {allNftDetails.map((details, index) => {
         return (
           <div key={index} className={styles.center}>

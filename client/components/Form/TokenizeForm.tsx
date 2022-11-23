@@ -79,62 +79,60 @@ export default function TokenizeForm() {
 
   return (
     <div className={styles.container}>
-      <form>
-        <div className={styles.field}>
-          <p>Farmer name:</p>
-          <input
-            className={styles.line}
-            type="text"
-            onChange={(e) => setFarmerName(e.target.value)}
-          />
-        </div>
+      <div className={styles.field}>
+        <p>Farmer name:</p>
+        <input
+          className={styles.line}
+          type="text"
+          onChange={(e) => setFarmerName(e.target.value)}
+        />
+      </div>
 
-        <div className={styles.field}>
-          <p>description:</p>
-          <textarea
-            className={styles.text_area}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+      <div className={styles.field}>
+        <p>description:</p>
+        <textarea
+          className={styles.text_area}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
 
-        <div className={styles.field}>
-          <p>total number of mint:</p>
-          <input
-            className={styles.line}
-            type="number"
-            value={totalMint}
-            onChange={(e) => setTotalMint(e.target.value)}
-          />
-        </div>
+      <div className={styles.field}>
+        <p>total number of mint:</p>
+        <input
+          className={styles.line}
+          type="number"
+          value={totalMint}
+          onChange={(e) => setTotalMint(e.target.value)}
+        />
+      </div>
 
-        <div className={styles.field}>
-          <p>price:</p>
-          <input
-            className={styles.line}
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </div>
+      <div className={styles.field}>
+        <p>price:</p>
+        <input
+          className={styles.line}
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+      </div>
 
-        <div className={styles.field}>
-          <p>expiration date:</p>
-          <input
-            className={styles.date}
-            type="date"
-            value={expirationDate}
-            onChange={(e) => setExpirationDate(e.target.value)}
-          />
-        </div>
+      <div className={styles.field}>
+        <p>expiration date:</p>
+        <input
+          className={styles.date}
+          type="date"
+          value={expirationDate}
+          onChange={(e) => setExpirationDate(e.target.value)}
+        />
+      </div>
 
-        <div className={styles.field_button}>
-          <ActionButton
-            title={"Generate NFT"}
-            onClick={() => onClickGenerateNFT()}
-            disable={false}
-          />
-        </div>
-      </form>
+      <div className={styles.field_button}>
+        <ActionButton
+          title={"Generate NFT"}
+          onClick={() => onClickGenerateNFT()}
+          disable={false}
+        />
+      </div>
     </div>
   );
 }
