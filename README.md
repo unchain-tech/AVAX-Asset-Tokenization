@@ -14,17 +14,21 @@ Symbol: AVAX
 Explorer: https://testnet.snowtrace.io/
 ```
 
-Home
+`Home`
 
+![](/public/Home.png)
 
+`For Farmer: Tokenize`
 
-### Start from faucet
+![](/public/GenerateNFT.png)
 
-Get the two tokens (fake USDC and fake JOE) from faucet.
+`For Farmer: ViewBuyers`
 
-![](/public/images/faucet.gif)
+![](/public/ViewBuyers.png)
 
+`For Buyer`
 
+![](/public/List.png)
 
-dapp overview
+### dapp overview
 ![](./hole.drawio.svg)
