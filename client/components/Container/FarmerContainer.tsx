@@ -11,7 +11,7 @@ export default function FarmerContainer() {
   const [activeTab, setActiveTab] = useState(Tokenize);
 
   return (
-    <div className={styles.container}>
+    <div>
       <div className={styles.selectTab}>
         <div
           className={
