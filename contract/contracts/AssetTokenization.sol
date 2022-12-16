@@ -117,10 +117,11 @@ contract AssetTokenization is AutomationCompatibleInterface {
         )
     {
         for (uint256 index = 0; index < farmers.length; index++) {
-            if (!availableContract(farmers[index])) {
+            address farmer = farmers[index];
+            if (!availableContract(farmer)) {
                 continue;
             }
-            if (farmerToNftContract[farmers[index]].isExpired()) {
+            if (farmerToNftContract[farmer].isExpired()) {
                 return (true, "");
             }
         }
