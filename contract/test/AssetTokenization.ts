@@ -117,7 +117,7 @@ describe("AssetTokenization", function () {
     });
   });
 
-  /* 環境によって実行結果が変わってしまい, 原因がわからないのでコメントアウトします。
+  /* レポジトリを新規クローン -> npm install -> npx hardhat test を実行すると初回時のみテストが通らない。原因不明のためコメントアウトします。
   describe("upkeep", function () {
     it("checkUpkeep and performUpkeep", async function () {
       const { userAccounts, assetTokenization } = await loadFixture(
