@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx hardhat test",
+    "test": "npx hardhat test test/AssetTokenization.ts && npx hardhat test test/FarmNft.ts",
     "deploy": "npx hardhat run scripts/deploy.ts --network fuji",
     "cp": "cp typechain-types/contracts/AssetTokenization.ts ../client/types/ && cp artifacts/contracts/AssetTokenization.sol/AssetTokenization.json ../client/artifacts/"
   },
