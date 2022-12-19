@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { BigNumber, Overrides } from "ethers";
 import { expect } from "chai";
-import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
+import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
 
 describe("AssetTokenization", function () {
   const oneWeekInSecond = 60 * 60 * 24 * 7;
@@ -117,7 +117,6 @@ describe("AssetTokenization", function () {
     });
   });
 
-  /* レポジトリを新規クローン -> npm install -> npx hardhat test を実行すると初回時のみテストが通らない。原因不明のためコメントアウトします。
   describe("upkeep", function () {
     it("checkUpkeep and performUpkeep", async function () {
       const { userAccounts, assetTokenization } = await loadFixture(
@@ -125,49 +124,33 @@ describe("AssetTokenization", function () {
       );
 
       // 定数用意
+      const farmer = userAccounts[0];
       const farmerName = "farmer";
       const description = "description";
       const totalMint = BigNumber.from(5);
       const price = BigNumber.from(100);
-
-      // 期限に余裕があるnftコントラクトの用意
-      const farmer1 = userAccounts[0];
-      const expirationDateAfterNow = BigNumber.from(Date.now())
+      const expirationDate = BigNumber.from(Date.now())
         .div(1000) // in second
         .add(oneWeekInSecond); // one week later
 
-      // デプロイ
+      // nftコントラクトをデプロイ
       await assetTokenization
-        .connect(farmer1)
+        .connect(farmer)
         .generateNftContract(
           farmerName,
           description,
           totalMint,
           price,
-          expirationDateAfterNow
+          expirationDate
         );
 
       const [return1] = await assetTokenization.checkUpkeep("0x00");
 
-      // 期限切れのnftコントラクトがないのでfalse
+      // この時点では期限切れのnftコントラクトがないのでfalse
       expect(return1).to.equal(false);
 
-      // 期限切れのnftコントラクトを用意
-      const farmer2 = userAccounts[1];
-      const expirationDateBeforeNow = BigNumber.from(Date.now())
-        .div(1000) // in second
-        .sub(1); // back to before now
-
-      // デプロイ
-      await assetTokenization
-        .connect(farmer2)
-        .generateNftContract(
-          farmerName,
-          description,
-          totalMint,
-          price,
-          expirationDateBeforeNow
-        );
+      // ブロックチェーンのタイムスタンプを変更(期限の1s後のタイムスタンプを含んだブロックを生成)し, nftコントラクトの期限が切れるようにします。
+      await time.increaseTo(expirationDate.add(1));
 
       const [return2] = await assetTokenization.checkUpkeep("0x00");
 
@@ -177,8 +160,8 @@ describe("AssetTokenization", function () {
       await assetTokenization.performUpkeep("0x00");
 
       // 期限切れのnftコントラクトの情報は取得できない
-      await expect(assetTokenization.getNftContractDetails(farmer2.address)).to
+      await expect(assetTokenization.getNftContractDetails(farmer.address)).to
         .be.reverted;
     });
-  });*/
+  });
 });
