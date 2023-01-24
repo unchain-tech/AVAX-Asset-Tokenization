@@ -2,6 +2,8 @@
 
 Dapp that tokenize crops and trade NFT.
 
+Tutorial document: coming soon ...
+
 ### UI
 
 Add the following network before:
