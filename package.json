@@ -1,0 +1,25 @@
+{
+  "name": "avax-asset-tokenization",
+  "version": "0.1.0",
+  "description": "asset tokenization",
+  "license": "",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unchain-tech/AVAX-Asset-Tokenization.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/unchain-tech/AVAX-Asset-Tokenization/issues"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "contract": "yarn workspace contract",
+    "client": "yarn workspace client",
+    "test": "yarn contract test"
+  }
+}
