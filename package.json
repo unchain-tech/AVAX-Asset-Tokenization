@@ -35,6 +35,9 @@
     "simple-git-hooks": "^2.8.1",
     "solhint": "^3.4.1"
   },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
   "scripts": {
     "contract": "yarn workspace contract",
     "client": "yarn workspace client",
