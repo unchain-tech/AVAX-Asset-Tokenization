@@ -1,7 +1,7 @@
-import { ethers } from "hardhat";
-import { BigNumber, Overrides } from "ethers";
-import { expect } from "chai";
 import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
+import { expect } from "chai";
+import { BigNumber, Overrides } from "ethers";
+import { ethers } from "hardhat";
 
 describe("AssetTokenization", function () {
   const oneWeekInSecond = 60 * 60 * 24 * 7;
@@ -10,7 +10,7 @@ describe("AssetTokenization", function () {
     const accounts = await ethers.getSigners();
 
     const AssetTokenization = await ethers.getContractFactory(
-      "AssetTokenization"
+      "AssetTokenization",
     );
     const assetTokenization = await AssetTokenization.deploy();
 
@@ -24,7 +24,7 @@ describe("AssetTokenization", function () {
   describe("basic", function () {
     it("generate NFT contract and check details", async function () {
       const { userAccounts, assetTokenization } = await loadFixture(
-        deployContract
+        deployContract,
       );
 
       const farmerName = "farmer";
@@ -45,7 +45,7 @@ describe("AssetTokenization", function () {
           description,
           totalMint,
           price,
-          expirationDate
+          expirationDate,
         );
 
       await assetTokenization
@@ -55,11 +55,11 @@ describe("AssetTokenization", function () {
           description,
           totalMint,
           price,
-          expirationDate
+          expirationDate,
         );
 
       const details1 = await assetTokenization.getNftContractDetails(
-        farmer1.address
+        farmer1.address,
       );
       expect(details1.farmerAddress).to.equal(farmer1.address);
       expect(details1.farmerName).to.equal(farmerName);
@@ -70,7 +70,7 @@ describe("AssetTokenization", function () {
       expect(details1.expirationDate).to.equal(expirationDate);
 
       const details2 = await assetTokenization.getNftContractDetails(
-        farmer2.address
+        farmer2.address,
       );
       expect(details2.farmerAddress).to.equal(farmer2.address);
       expect(details2.farmerName).to.equal(farmerName);
@@ -85,7 +85,7 @@ describe("AssetTokenization", function () {
   describe("buyNFT", function () {
     it("balance should be change", async function () {
       const { userAccounts, assetTokenization } = await loadFixture(
-        deployContract
+        deployContract,
       );
 
       const farmerName = "farmer";
@@ -106,13 +106,13 @@ describe("AssetTokenization", function () {
           description,
           totalMint,
           price,
-          expirationDate
+          expirationDate,
         );
 
       await expect(
         assetTokenization
           .connect(buyer)
-          .buyNft(farmer.address, { value: price } as Overrides)
+          .buyNft(farmer.address, { value: price } as Overrides),
       ).to.changeEtherBalances([farmer, buyer], [price, -price]);
     });
   });
@@ -120,7 +120,7 @@ describe("AssetTokenization", function () {
   describe("upkeep", function () {
     it("checkUpkeep and performUpkeep", async function () {
       const { userAccounts, assetTokenization } = await loadFixture(
-        deployContract
+        deployContract,
       );
 
       // 定数用意
@@ -141,7 +141,7 @@ describe("AssetTokenization", function () {
           description,
           totalMint,
           price,
-          expirationDate
+          expirationDate,
         );
 
       const [return1] = await assetTokenization.checkUpkeep("0x00");

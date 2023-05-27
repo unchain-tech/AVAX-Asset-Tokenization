@@ -1,7 +1,7 @@
-import { ethers } from "hardhat";
-import { BigNumber, Overrides } from "ethers";
-import { expect } from "chai";
 import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
+import { expect } from "chai";
+import { BigNumber, Overrides } from "ethers";
+import { ethers } from "hardhat";
 
 describe("farmNft", function () {
   const oneWeekInSecond = 60 * 60 * 24 * 7;
@@ -24,7 +24,7 @@ describe("farmNft", function () {
       description,
       totalMint,
       price,
-      expirationDate
+      expirationDate,
     );
 
     return {
@@ -48,7 +48,7 @@ describe("farmNft", function () {
 
     it("balance should be change", async function () {
       const { deployAccount, userAccounts, farmNft } = await loadFixture(
-        deployContract
+        deployContract,
       );
 
       const farmer = deployAccount;
@@ -61,7 +61,7 @@ describe("farmNft", function () {
       await expect(
         farmNft
           .connect(buyer)
-          .mintNFT(buyer.address, { value: price } as Overrides)
+          .mintNFT(buyer.address, { value: price } as Overrides),
       ).to.changeEtherBalances([farmer, buyer], [price, -price]);
     });
 
@@ -79,7 +79,7 @@ describe("farmNft", function () {
 
       // 上限までmintしたので, 次のmintは失敗するはずです。
       await expect(
-        farmNft.mintNFT(buyer.address, { value: price } as Overrides)
+        farmNft.mintNFT(buyer.address, { value: price } as Overrides),
       ).to.be.reverted;
     });
 
@@ -92,7 +92,7 @@ describe("farmNft", function () {
       await expect(
         farmNft
           .connect(buyer)
-          .mintNFT(buyer.address, { value: price.sub(1) } as Overrides)
+          .mintNFT(buyer.address, { value: price.sub(1) } as Overrides),
       ).to.be.reverted;
     });
   });

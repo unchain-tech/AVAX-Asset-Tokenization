@@ -1,7 +1,8 @@
-import styles from "./DefaultLayout.module.css";
 import Link from "next/link";
+import { ReactNode, useContext } from "react";
+
 import CurrentAccountContext from "../../context/CurrentAccountProvider";
-import { useContext, ReactNode } from "react";
+import styles from "./DefaultLayout.module.css";
 
 type Props = {
   children: ReactNode;
@@ -17,7 +18,7 @@ export default function DefaultLayout({ children, home }: Props) {
         <div className={styles.rightHeader}>
           <div className={styles.appName}> Asset Tokenization </div>
         </div>
-        {currentAccount == undefined ? (
+        {currentAccount === undefined ? (
           <div className={styles.connectBtn} onClick={connectWallet}>
             {" "}
             Connect to wallet{" "}

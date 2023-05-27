@@ -6,7 +6,7 @@ async function deploy() {
 
   // AssetTokenizationコントラクトをデプロイします。
   const AssetTokenization = await ethers.getContractFactory(
-    "AssetTokenization"
+    "AssetTokenization",
   );
   const assetTokenization = await AssetTokenization.deploy();
   await assetTokenization.deployed();

@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
-import styles from "./TokenizeForm.module.css";
+
 import CurrentAccountContext from "../../context/CurrentAccountProvider";
 import { useContract } from "../../hooks/useContract";
+import { avaxToWei } from "../../utils/formatter";
 import { validAmount } from "../../utils/validAmount";
 import ActionButton from "../Button/ActionButton";
-import { avaxToWei } from "../../utils/formatter";
+import styles from "./TokenizeForm.module.css";
 
 export default function TokenizeForm() {
   const [currentAccount] = useContext(CurrentAccountContext);
@@ -62,7 +63,7 @@ export default function TokenizeForm() {
         description,
         totalMint,
         priceInWei,
-        dateInSeconds
+        dateInSeconds,
       );
       await txn.wait();
 

@@ -1,13 +1,14 @@
 import { useCallback, useContext, useEffect, useState } from "react";
+
 import CurrentAccountContext from "../../context/CurrentAccountProvider";
 import { useContract } from "../../hooks/useContract";
-import styles from "./ListNftForm.module.css";
-import ActionButton from "../Button/ActionButton";
 import {
   avaxToWei,
-  weiToAvax,
   blockTimeStampToDate,
+  weiToAvax,
 } from "../../utils/formatter";
+import ActionButton from "../Button/ActionButton";
+import styles from "./ListNftForm.module.css";
 
 type FarmNftDetailsType = {
   farmerAddress: string;
@@ -72,14 +73,14 @@ export default function ListNftForm() {
     }
     if (!assetTokenization) return;
     const farmers = await assetTokenization.getFarmers();
-    let allDetails: FarmNftDetailsType[] = [];
+    const allDetails: FarmNftDetailsType[] = [];
     for (let index = 0; index < farmers.length; index++) {
       const available = await assetTokenization.availableContract(
-        farmers[index]
+        farmers[index],
       );
       if (available) {
         const details = await assetTokenization.getNftContractDetails(
-          farmers[index]
+          farmers[index],
         );
         allDetails.push({
           farmerAddress: details.farmerAddress,

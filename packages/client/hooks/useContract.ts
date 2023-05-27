@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
+import { useCallback, useEffect, useState } from "react";
+
 import AssetTokenizationArtifact from "../artifacts/AssetTokenization.json";
 import { AssetTokenization as AssetTokenizationType } from "../types";
 import { getEthereum } from "../utils/ethereum";
@@ -26,7 +27,7 @@ export const useContract = ({
     (
       contractAddress: string,
       abi: ethers.ContractInterface,
-      storeContract: (_: ethers.Contract) => void
+      storeContract: (_: ethers.Contract) => void,
     ) => {
       if (!ethereum) {
         console.log("Ethereum object doesn't exist!");
@@ -39,8 +40,9 @@ export const useContract = ({
         return;
       }
       try {
-        // @ts-ignore: ethereum as ethers.providers.ExternalProvider
-        const provider = new ethers.providers.Web3Provider(ethereum);
+        const provider = new ethers.providers.Web3Provider(
+          ethereum as unknown as ethers.providers.ExternalProvider,
+        );
         const signer = provider.getSigner(); // 簡易実装のため, 引数なし = 初めのアカウント(account#0)を使用する
         const Contract = new ethers.Contract(contractAddress, abi, signer);
         storeContract(Contract);
@@ -48,7 +50,7 @@ export const useContract = ({
         console.log(error);
       }
     },
-    [ethereum, currentAccount]
+    [ethereum, currentAccount],
   );
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export const useContract = ({
       AssetTokenizationArtifact.abi,
       (Contract: ethers.Contract) => {
         setAssetTokenization(Contract as AssetTokenizationType);
-      }
+      },
     );
   }, [ethereum, currentAccount, getContract]);
 
