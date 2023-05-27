@@ -5,3 +5,11 @@
 **/artifacts/
 **/cache/
 **/typechain-types/
+
+packages/client/types/@chainlink/
+packages/client/types/@openzeppelin/
+packages/client/types/contracts/
+packages/client/types/factories/
+packages/client/types/common.ts
+packages/client/types/hardhat.d.ts
+packages/client/types/index.ts
