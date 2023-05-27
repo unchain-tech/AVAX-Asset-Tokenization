@@ -8,5 +8,17 @@ module.exports = {
   importOrderSortSpecifiers: true,
   importOrderGroupNamespaceSpecifiers: true,
   importOrderCaseInsensitive: true,
-  plugins: ["@trivago/prettier-plugin-sort-imports"],
+  plugins: [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-solidity",
+  ],
+  overrides: [
+    {
+      files: "**/*.sol",
+      options: {
+        tabWidth: 4,
+        singleQuote: false,
+      },
+    },
+  ],
 };
