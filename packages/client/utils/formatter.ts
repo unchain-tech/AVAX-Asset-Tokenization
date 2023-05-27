@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers } from 'ethers';
 
 export const weiToAvax = (wei: BigNumber) => {
   return ethers.utils.formatEther(wei);

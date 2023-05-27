@@ -1,7 +1,7 @@
-import type { AppProps } from "next/app";
+import type { AppProps } from 'next/app';
 
-import { CurrentAccountProvider } from "../context/CurrentAccountProvider";
-import "../styles/globals.css";
+import { CurrentAccountProvider } from '../context/CurrentAccountProvider';
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

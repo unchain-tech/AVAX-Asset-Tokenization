@@ -1,12 +1,12 @@
-import { ethers } from "ethers";
-import { useCallback, useEffect, useState } from "react";
+import { ethers } from 'ethers';
+import { useCallback, useEffect, useState } from 'react';
 
-import AssetTokenizationArtifact from "../artifacts/AssetTokenization.json";
-import { AssetTokenization as AssetTokenizationType } from "../types";
-import { getEthereum } from "../utils/ethereum";
+import AssetTokenizationArtifact from '../artifacts/AssetTokenization.json';
+import { AssetTokenization as AssetTokenizationType } from '../types';
+import { getEthereum } from '../utils/ethereum';
 
 export const AssetTokenizationAddress =
-  "0xb1daCD48a3F743341b23d12C794015FF847a73eF";
+  '0xb1daCD48a3F743341b23d12C794015FF847a73eF';
 
 type PropsUseContract = {
   currentAccount: string | undefined;

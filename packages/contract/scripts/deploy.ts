@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+import { ethers } from 'hardhat';
 
 async function deploy() {
   // コントラクトをデプロイするアカウントのアドレスを取得します。
@@ -6,13 +6,13 @@ async function deploy() {
 
   // AssetTokenizationコントラクトをデプロイします。
   const AssetTokenization = await ethers.getContractFactory(
-    "AssetTokenization",
+    'AssetTokenization',
   );
   const assetTokenization = await AssetTokenization.deploy();
   await assetTokenization.deployed();
 
-  console.log("assetTokenization address:", assetTokenization.address);
-  console.log("account address that deploy contract:", deployer.address);
+  console.log('assetTokenization address:', assetTokenization.address);
+  console.log('account address that deploy contract:', deployer.address);
 }
 
 deploy()

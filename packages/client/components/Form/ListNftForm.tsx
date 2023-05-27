@@ -1,14 +1,14 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from 'react';
 
-import CurrentAccountContext from "../../context/CurrentAccountProvider";
-import { useContract } from "../../hooks/useContract";
+import CurrentAccountContext from '../../context/CurrentAccountProvider';
+import { useContract } from '../../hooks/useContract';
 import {
   avaxToWei,
   blockTimeStampToDate,
   weiToAvax,
-} from "../../utils/formatter";
-import ActionButton from "../Button/ActionButton";
-import styles from "./ListNftForm.module.css";
+} from '../../utils/formatter';
+import ActionButton from '../Button/ActionButton';
+import styles from './ListNftForm.module.css';
 
 type FarmNftDetailsType = {
   farmerAddress: string;
@@ -27,7 +27,7 @@ export default function ListNftForm() {
 
   const onClickBuyNft = async (farmerAddress: string, priceInAvax: string) => {
     if (!currentAccount) {
-      alert("connect wallet");
+      alert('connect wallet');
       return;
     }
     if (!assetTokenization) return;
@@ -39,7 +39,7 @@ export default function ListNftForm() {
       });
 
       await txn.wait();
-      alert("Success");
+      alert('Success');
     } catch (error) {
       alert(error);
     }
@@ -57,9 +57,9 @@ export default function ListNftForm() {
         <p>expiration date: {details.expirationDate.toString()}</p>
         <div className={styles.center}>
           <ActionButton
-            title={"Buy NFT"}
+            title={'Buy NFT'}
             onClick={() => onClickBuyNft(details.farmerAddress, details.price)}
-            disable={details.availableMint === "0"}
+            disable={details.availableMint === '0'}
           />
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function ListNftForm() {
 
   const getAllNftDetails = useCallback(async () => {
     if (!currentAccount) {
-      alert("connect wallet");
+      alert('connect wallet');
       return;
     }
     if (!assetTokenization) return;

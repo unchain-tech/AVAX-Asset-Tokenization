@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import TokenizeForm from "../Form/TokenizeForm";
-import ViewBuyersForm from "../Form/ViewBuyersForm";
-import styles from "./FarmerContainer.module.css";
+import TokenizeForm from '../Form/TokenizeForm';
+import ViewBuyersForm from '../Form/ViewBuyersForm';
+import styles from './FarmerContainer.module.css';
 
 export default function FarmerContainer() {
   // farmer actions
-  const Tokenize = "Tokenize";
-  const ViewBuyers = "ViewBuyers";
+  const Tokenize = 'Tokenize';
+  const ViewBuyers = 'ViewBuyers';
 
   const [activeTab, setActiveTab] = useState(Tokenize);
 
@@ -17,8 +17,8 @@ export default function FarmerContainer() {
         <div
           className={
             styles.tabStyle +
-            " " +
-            (activeTab === Tokenize ? styles.activeTab : "")
+            ' ' +
+            (activeTab === Tokenize ? styles.activeTab : '')
           }
           onClick={() => setActiveTab(Tokenize)}
         >
@@ -27,8 +27,8 @@ export default function FarmerContainer() {
         <div
           className={
             styles.tabStyle +
-            " " +
-            (activeTab === ViewBuyers ? styles.activeTab : "")
+            ' ' +
+            (activeTab === ViewBuyers ? styles.activeTab : '')
           }
           onClick={() => setActiveTab(ViewBuyers)}
         >

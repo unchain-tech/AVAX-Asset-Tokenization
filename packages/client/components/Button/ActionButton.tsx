@@ -1,4 +1,4 @@
-import styles from "./ActionButton.module.css";
+import styles from './ActionButton.module.css';
 
 type Props = {
   title: string;

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import Link from 'next/link';
+import { MdKeyboardArrowRight } from 'react-icons/md';
 
-import styles from "./LinkToPageButton.module.css";
+import styles from './LinkToPageButton.module.css';
 
 type Props = {
   linkTo: string;

@@ -1,23 +1,23 @@
-import { MdAgriculture, MdList } from "react-icons/md";
+import { MdAgriculture, MdList } from 'react-icons/md';
 
-import LinkToPageButton from "../Button/LinkToPageButton";
-import styles from "./HomeContainer.module.css";
+import LinkToPageButton from '../Button/LinkToPageButton';
+import styles from './HomeContainer.module.css';
 
 export default function HomeContainer() {
   return (
     <div>
       <div className={styles.centerContent}>
         <LinkToPageButton
-          linkTo={"/FarmerPage"}
+          linkTo={'/FarmerPage'}
           iconLeft={<MdAgriculture size={50} />}
-          description={"For Farmer"}
+          description={'For Farmer'}
         />
       </div>
       <div className={styles.centerContent}>
         <LinkToPageButton
-          linkTo={"/BuyerPage"}
+          linkTo={'/BuyerPage'}
           iconLeft={<MdList size={50} />}
-          description={"For Buyer"}
+          description={'For Buyer'}
         />
       </div>
     </div>

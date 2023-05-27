@@ -1,41 +1,41 @@
-import { useContext, useState } from "react";
+import { useContext, useState } from 'react';
 
-import CurrentAccountContext from "../../context/CurrentAccountProvider";
-import { useContract } from "../../hooks/useContract";
-import { avaxToWei } from "../../utils/formatter";
-import { validAmount } from "../../utils/validAmount";
-import ActionButton from "../Button/ActionButton";
-import styles from "./TokenizeForm.module.css";
+import CurrentAccountContext from '../../context/CurrentAccountProvider';
+import { useContract } from '../../hooks/useContract';
+import { avaxToWei } from '../../utils/formatter';
+import { validAmount } from '../../utils/validAmount';
+import ActionButton from '../Button/ActionButton';
+import styles from './TokenizeForm.module.css';
 
 export default function TokenizeForm() {
   const [currentAccount] = useContext(CurrentAccountContext);
   const { assetTokenization } = useContract({ currentAccount });
 
-  const [farmerName, setFarmerName] = useState("");
-  const [description, setDescription] = useState("");
-  const [totalMint, setTotalMint] = useState("");
-  const [price, setPrice] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
+  const [farmerName, setFarmerName] = useState('');
+  const [description, setDescription] = useState('');
+  const [totalMint, setTotalMint] = useState('');
+  const [price, setPrice] = useState('');
+  const [expirationDate, setExpirationDate] = useState('');
 
   const validInput = () => {
-    if (farmerName === "") {
-      alert("enter farmer name");
+    if (farmerName === '') {
+      alert('enter farmer name');
       return false;
     }
-    if (description === "") {
-      alert("enter description name");
+    if (description === '') {
+      alert('enter description name');
       return false;
     }
     if (!validAmount(totalMint)) {
-      alert("invalid total number of mint");
+      alert('invalid total number of mint');
       return false;
     }
     if (!validAmount(price)) {
-      alert("invalid price");
+      alert('invalid price');
       return false;
     }
-    if (expirationDate === "") {
-      alert("invalid expiration date");
+    if (expirationDate === '') {
+      alert('invalid expiration date');
       return false;
     }
     return true;
@@ -49,7 +49,7 @@ export default function TokenizeForm() {
 
   const onClickGenerateNFT = async () => {
     if (!currentAccount) {
-      alert("connect wallet");
+      alert('connect wallet');
       return;
     }
     if (!assetTokenization) return;
@@ -67,12 +67,12 @@ export default function TokenizeForm() {
       );
       await txn.wait();
 
-      setFarmerName("");
-      setDescription("");
-      setTotalMint("");
-      setPrice("");
-      setExpirationDate("");
-      alert("Success");
+      setFarmerName('');
+      setDescription('');
+      setTotalMint('');
+      setPrice('');
+      setExpirationDate('');
+      alert('Success');
     } catch (error) {
       alert(error);
     }
@@ -129,7 +129,7 @@ export default function TokenizeForm() {
 
       <div className={styles.field_button}>
         <ActionButton
-          title={"Generate NFT"}
+          title={'Generate NFT'}
           onClick={() => onClickGenerateNFT()}
           disable={false}
         />

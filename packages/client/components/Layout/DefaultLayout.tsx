@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { ReactNode, useContext } from "react";
+import Link from 'next/link';
+import { ReactNode, useContext } from 'react';
 
-import CurrentAccountContext from "../../context/CurrentAccountProvider";
-import styles from "./DefaultLayout.module.css";
+import CurrentAccountContext from '../../context/CurrentAccountProvider';
+import styles from './DefaultLayout.module.css';
 
 type Props = {
   children: ReactNode;
@@ -20,13 +20,13 @@ export default function DefaultLayout({ children, home }: Props) {
         </div>
         {currentAccount === undefined ? (
           <div className={styles.connectBtn} onClick={connectWallet}>
-            {" "}
-            Connect to wallet{" "}
+            {' '}
+            Connect to wallet{' '}
           </div>
         ) : (
           <div className={styles.connected}>
-            {" "}
-            {"Connected to " + currentAccount}{" "}
+            {' '}
+            {'Connected to ' + currentAccount}{' '}
           </div>
         )}
       </div>

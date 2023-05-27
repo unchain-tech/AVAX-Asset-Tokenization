@@ -1,8 +1,8 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from 'react';
 
-import CurrentAccountContext from "../../context/CurrentAccountProvider";
-import { useContract } from "../../hooks/useContract";
-import styles from "./ViewBuyersForm.module.css";
+import CurrentAccountContext from '../../context/CurrentAccountProvider';
+import { useContract } from '../../hooks/useContract';
+import styles from './ViewBuyersForm.module.css';
 
 export default function ViewBuyersForm() {
   const [currentAccount] = useContext(CurrentAccountContext);
@@ -20,7 +20,7 @@ export default function ViewBuyersForm() {
 
   const getBuyers = useCallback(async () => {
     if (!currentAccount) {
-      alert("connect wallet");
+      alert('connect wallet');
       return;
     }
     if (!assetTokenization) return;

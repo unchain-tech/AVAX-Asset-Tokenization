@@ -1,9 +1,9 @@
-import { createContext, ReactNode } from "react";
+import { createContext, ReactNode } from 'react';
 
-import { useWallet } from "../hooks/useWallet";
+import { useWallet } from '../hooks/useWallet';
 
 const CurrentAccountContext = createContext<[string | undefined, () => void]>([
-  "",
+  '',
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   () => {},
 ]);

@@ -1,23 +1,23 @@
-import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
-import { expect } from "chai";
-import { BigNumber, Overrides } from "ethers";
-import { ethers } from "hardhat";
+import { loadFixture, time } from '@nomicfoundation/hardhat-network-helpers';
+import { expect } from 'chai';
+import { BigNumber, Overrides } from 'ethers';
+import { ethers } from 'hardhat';
 
-describe("farmNft", function () {
+describe('farmNft', function () {
   const oneWeekInSecond = 60 * 60 * 24 * 7;
 
   async function deployContract() {
     const accounts = await ethers.getSigners();
 
-    const farmerName = "farmer";
-    const description = "description";
+    const farmerName = 'farmer';
+    const description = 'description';
     const totalMint = BigNumber.from(5);
     const price = BigNumber.from(100);
     const expirationDate = BigNumber.from(Date.now())
       .div(1000) // in second
       .add(oneWeekInSecond); // one week later
 
-    const FarmNft = await ethers.getContractFactory("FarmNft");
+    const FarmNft = await ethers.getContractFactory('FarmNft');
     const farmNft = await FarmNft.deploy(
       accounts[0].address,
       farmerName,
@@ -34,8 +34,8 @@ describe("farmNft", function () {
     };
   }
 
-  describe("mint", function () {
-    it("NFT should be minted", async function () {
+  describe('mint', function () {
+    it('NFT should be minted', async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const buyer = userAccounts[0];
@@ -46,7 +46,7 @@ describe("farmNft", function () {
       expect(await farmNft.ownerOf(0)).to.equal(buyer.address);
     });
 
-    it("balance should be change", async function () {
+    it('balance should be change', async function () {
       const { deployAccount, userAccounts, farmNft } = await loadFixture(
         deployContract,
       );
@@ -65,7 +65,7 @@ describe("farmNft", function () {
       ).to.changeEtherBalances([farmer, buyer], [price, -price]);
     });
 
-    it("revert when not enough nft to mint", async function () {
+    it('revert when not enough nft to mint', async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const buyer = userAccounts[0];
@@ -83,7 +83,7 @@ describe("farmNft", function () {
       ).to.be.reverted;
     });
 
-    it("revert when not enough currency to mint", async function () {
+    it('revert when not enough currency to mint', async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const buyer = userAccounts[0];
@@ -97,8 +97,8 @@ describe("farmNft", function () {
     });
   });
 
-  describe("tokenURI", function () {
-    it("check URI", async function () {
+  describe('tokenURI', function () {
+    it('check URI', async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const buyer = userAccounts[0];
@@ -108,12 +108,12 @@ describe("farmNft", function () {
         value: price,
       } as Overrides);
 
-      console.log("URI: ", await farmNft.tokenURI(0));
+      console.log('URI: ', await farmNft.tokenURI(0));
     });
   });
 
-  describe("burnNFT", function () {
-    it("token should be burned", async function () {
+  describe('burnNFT', function () {
+    it('token should be burned', async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const buyer = userAccounts[0];
@@ -135,15 +135,15 @@ describe("farmNft", function () {
       expect(await farmNft.balanceOf(buyer.address)).to.equal(0);
     });
 
-    it("revert when call burnNFT before expiration", async function () {
+    it('revert when call burnNFT before expiration', async function () {
       const { farmNft } = await loadFixture(deployContract);
 
       await expect(farmNft.burnNFT()).to.be.reverted;
     });
   });
 
-  describe("getTokenOwners", function () {
-    it("should return valid addresses", async function () {
+  describe('getTokenOwners', function () {
+    it('should return valid addresses', async function () {
       const { userAccounts, farmNft } = await loadFixture(deployContract);
 
       const price = await farmNft.price();
